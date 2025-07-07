@@ -142,6 +142,9 @@
                             <textarea id="explanation" class="form-control" placeholder="Explain how this media features today's trope. Be specific about the element that fits..." required></textarea>
                         </div>
 
+                        <input type="hidden" id="hiddenTropeId" name="hiddenTropeId">
+                        <input type="hidden" id="hiddenTropeName" name="hiddenTropeName">
+
                         <button type="submit" class="submit-suggestion">Submit Suggestion</button>
                     </form>
 
@@ -179,7 +182,11 @@
         function openSuggestionModal() {
             const currentTrope = getTodaysTrope();
             console.log('Current trope:', currentTrope); // Debug log
-            
+
+            // Set hidden fields with current trope data
+            document.getElementById('hiddenTropeId').value = currentTrope.id;
+            document.getElementById('hiddenTropeName').value = currentTrope.name;
+
             // Update instruction text with current trope
             document.getElementById('suggestionInstructions').innerHTML = 
                 `Just finished the puzzle? You probably thought of other examples that fit <strong>"${currentTrope.name}"</strong>! Help expand the game by suggesting media we might have missed.`;
@@ -222,8 +229,8 @@
                 mediaType: document.getElementById('mediaType').value,
                 releaseYear: document.getElementById('releaseYear').value,
                 explanation: document.getElementById('explanation').value,
-                tropeId: window.currentTropeData?.id || 'unknown',
-                tropeName: window.currentTropeData?.name || 'Unknown Trope',
+                tropeId: document.getElementById('hiddenTropeId').value,
+                tropeName: document.getElementById('hiddenTropeName').value,
                 timestamp: new Date().toISOString()
             };
 
