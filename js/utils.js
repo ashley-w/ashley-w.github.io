@@ -1,4 +1,4 @@
-// Tropium - Utility Functions (Phase 1)
+// TropeOut - Utility Functions (Phase 1)
 
 /**
  * Date and Time Utilities
@@ -277,7 +277,7 @@ const GameUtils = {
    */
   formatShareText(gameData) {
     const { score, total, date, tropeId, hintsUsed } = gameData;
-    let shareText = `🎭 Tropium ${DateUtils.formatDate(new Date(date), 'game')}\n`;
+    let shareText = `🎭 TropeOut ${DateUtils.formatDate(new Date(date), 'game')}\n`;
     shareText += `${score}/${total} correct\n`;
     
     // Add emoji grid

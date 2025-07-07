@@ -1,4 +1,4 @@
-// Tropium - Enhanced Answer Validator (Phase 1)
+// TropeOut - Enhanced Answer Validator (Phase 1)
 
 class AnswerValidator {
   constructor() {
