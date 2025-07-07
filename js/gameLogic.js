@@ -69,8 +69,16 @@ class TropeOutGame {
       console.log('🔍 Definition element found:', !!defElement);
       
       if (nameElement) {
-        nameElement.textContent = this.currentTrope.name;
-        console.log('✅ Set trope name to:', this.currentTrope.name);
+        let displayName = this.currentTrope.name;
+        
+        // Show alpha indicator if in alpha mode
+        const alphaIndex = localStorage.getItem('alpha_trope_index');
+        if (alphaIndex !== null) {
+          displayName += ` [ALPHA ${parseInt(alphaIndex) + 1}]`;
+        }
+        
+        nameElement.textContent = displayName;
+        console.log('✅ Set trope name to:', displayName);
       }
       
       if (defElement) {
@@ -368,7 +376,7 @@ class TropeOutGame {
     }, 3000);
   }
 
-  handleAlphaAccess() {
+  /*handleAlphaAccess() {
     const password = prompt('Enter alpha testing password:');
     
     // You can change this password to whatever you want
@@ -388,7 +396,64 @@ class TropeOutGame {
     }
     // If user cancels (password === null), do nothing
   }
-}
+} */
+
+  // Handle alpha access commands
+  // This function allows for cycling through tropes, resetting the game, or accessing specific tropes
+  // based on user input. It uses localStorage to remember the current trope index.
+  // It also provides feedback messages for user actions.
+
+  handleAlphaAccess() {
+    const password = prompt('Alpha commands:\n• "trope2025" or "alpha" = reset game\n• "next" = next trope\n• "prev" = previous trope\n• "0-4" = specific trope number\n\nEnter command:');
+    
+    if (password === null) return; // User cancelled
+    
+    // Handle trope cycling commands
+    if (password === 'next') {
+      const currentIndex = parseInt(localStorage.getItem('alpha_trope_index') || '0');
+      const nextIndex = (currentIndex + 1) % Object.keys(TROPES_DATABASE).length;
+      localStorage.setItem('alpha_trope_index', nextIndex);
+      this.showMessage(`🔄 Switched to trope ${nextIndex + 1}. Reloading...`, 'success');
+      setTimeout(() => window.location.reload(), 1000);
+      return;
+    }
+    
+    if (password === 'prev') {
+      const currentIndex = parseInt(localStorage.getItem('alpha_trope_index') || '0');
+      const prevIndex = currentIndex === 0 ? Object.keys(TROPES_DATABASE).length - 1 : currentIndex - 1;
+      localStorage.setItem('alpha_trope_index', prevIndex);
+      this.showMessage(`🔄 Switched to trope ${prevIndex + 1}. Reloading...`, 'success');
+      setTimeout(() => window.location.reload(), 1000);
+      return;
+    }
+    
+    // Handle specific trope number (0-4)
+    if (/^\d+$/.test(password)) {
+      const tropeIndex = parseInt(password);
+      const maxIndex = Object.keys(TROPES_DATABASE).length - 1;
+      if (tropeIndex >= 0 && tropeIndex <= maxIndex) {
+        localStorage.setItem('alpha_trope_index', tropeIndex);
+        this.showMessage(`🎯 Switched to trope ${tropeIndex + 1}. Reloading...`, 'success');
+        setTimeout(() => window.location.reload(), 1000);
+        return;
+      } else {
+        this.showMessage(`❌ Invalid trope number. Use 0-${maxIndex}`, 'error');
+        return;
+      }
+    }
+    
+    // Handle reset commands
+    if (password === 'trope2025' || password === 'alpha') {
+      // Clear all game data for fresh testing
+      localStorage.clear();
+      this.showMessage('🧹 Alpha mode activated! Reloading...', 'success');
+      setTimeout(() => window.location.reload(), 1000);
+    } else {
+      this.showMessage('❌ Invalid command', 'error');
+    }
+  }}
+
+
 
 // Initialize game when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
