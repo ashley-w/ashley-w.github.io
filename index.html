@@ -274,7 +274,7 @@ async function submitToGoogleForms(data) {
             
             // Create form
             const form = document.createElement('form');
-            const formUrl = `https://docs.google.com/forms/d/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
+            const formUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
             form.action = formUrl;
             form.method = 'POST';
             form.target = iframe.name;
