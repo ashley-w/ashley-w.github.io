@@ -66,6 +66,8 @@
                     <div class="complete-actions">
                         <button class="share-btn" id="shareBtn">📤 Share Results</button>
                         <button class="stats-btn" id="statsBtn">📊 View Stats</button>
+                        <!-- NEW: Suggestion prompt after game completion -->
+                        <button class="suggest-btn" onclick="openSuggestionModal()">💡 Know More Examples?</button>
                     </div>
                 </div>
             </section>
@@ -99,11 +101,56 @@
             </div>
         </div>
 
-        <!-- Alpha Testing Link -->
-        <div class="alpha-link">
-            <a href="#" id="alphaLink">Alpha</a>
+        <!-- NEW: Suggestion Modal -->
+        <div class="modal" id="suggestionModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Suggest Media</h3>
+                    <button class="close-btn" onclick="closeSuggestionModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="suggestion-instructions">
+                        <h4>Help Expand TropeOut!</h4>
+                        <p id="suggestionInstructions">Just finished the puzzle? You probably thought of other examples that fit this trope! Help expand the game by suggesting media we might have missed.</p>
+                    </div>
+
+                    <form id="suggestionForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="mediaTitle">Media Title *</label>
+                                <input type="text" id="mediaTitle" class="form-control" placeholder="e.g., The Maltese Falcon" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="mediaType">Type *</label>
+                                <select id="mediaType" class="form-control" required>
+                                    <option value="">Select...</option>
+                                    <option value="movie">Movie</option>
+                                    <option value="tv">TV Show</option>
+                                    <option value="book">Book</option>
+                                    <option value="game">Video Game</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="releaseYear">Release Year (Optional)</label>
+                            <input type="number" id="releaseYear" class="form-control" placeholder="e.g., 1941" min="1800" max="2030">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="explanation">Why does this fit the trope? *</label>
+                            <textarea id="explanation" class="form-control" placeholder="Explain how this media features today's trope. Be specific about the element that fits..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-suggestion">Submit Suggestion</button>
+                    </form>
+
+                    <div class="success-message" id="successMessage" style="display: none;">
+                        🎉 Thank you! Your suggestion has been submitted and will be reviewed soon.
+                    </div>
+                </div>
+            </div>
         </div>
-        
     </div>
 
     <!-- JavaScript Files -->
@@ -113,5 +160,133 @@
     <script src="js/validator.js"></script>
     <script src="js/gameLogic.js"></script>
     <script src="js/utils.js"></script>
+    
+    <!-- NEW: Suggestion Modal JavaScript -->
+    <script>
+        // Google Forms Configuration - CONFIGURED WITH YOUR ACTUAL FORM DATA
+        const GOOGLE_FORM_CONFIG = {
+            formId: '1FAIpQLSevPThb4gHqcJ9sRM-GSrNuI_1aQyj-pYUhdeJqr3P_gosvew',
+            entries: {
+                mediaTitle: 'entry.534424066',     // Media Title
+                mediaType: 'entry.245750863',      // Media Type  
+                releaseYear: 'entry.1039496227',   // Release Year
+                explanation: 'entry.1980446184',   // Explanation
+                tropeName: 'entry.1726494062',     // Trope Name (hidden from user)
+                tropeId: 'entry.1737666175'        // Trope ID (hidden from user)
+            }
+        };
+
+        function openSuggestionModal() {
+            const currentTrope = getTodaysTrope();
+            
+            // Update instruction text with current trope
+            document.getElementById('suggestionInstructions').innerHTML = 
+                `Just finished the puzzle? You probably thought of other examples that fit <strong>"${currentTrope.name}"</strong>! Help expand the game by suggesting media we might have missed.`;
+            
+            // Update placeholder text in explanation field
+            document.getElementById('explanation').placeholder = 
+                `Explain how this media features the "${currentTrope.name}" trope. Be specific about the element that fits...`;
+            
+            // Store current trope data for form submission
+            window.currentTropeData = {
+                id: currentTrope.id,
+                name: currentTrope.name
+            };
+            
+            document.getElementById('suggestionModal').style.display = 'flex';
+            document.getElementById('mediaTitle').focus();
+        }
+
+        function closeSuggestionModal() {
+            document.getElementById('suggestionModal').style.display = 'none';
+            document.getElementById('suggestionForm').reset();
+            document.getElementById('successMessage').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('suggestionModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSuggestionModal();
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('suggestionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                mediaTitle: document.getElementById('mediaTitle').value,
+                mediaType: document.getElementById('mediaType').value,
+                releaseYear: document.getElementById('releaseYear').value,
+                explanation: document.getElementById('explanation').value,
+                tropeId: window.currentTropeData?.id || 'unknown',
+                tropeName: window.currentTropeData?.name || 'Unknown Trope',
+                timestamp: new Date().toISOString()
+            };
+
+            submitSuggestion(formData);
+        });
+
+        async function submitSuggestion(data) {
+            const submitBtn = document.querySelector('.submit-suggestion');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            try {
+                await submitToGoogleForms(data);
+                
+                // Show success message
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('suggestionForm').reset();
+                
+                // Track suggestion in game stats
+                trackSuggestion(data.tropeId);
+                
+                // Auto-close modal after 3 seconds
+                setTimeout(() => {
+                    closeSuggestionModal();
+                }, 3000);
+                
+            } catch (error) {
+                alert('Sorry, there was an error submitting your suggestion. Please try again later.');
+                console.error('Submission error:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Suggestion';
+            }
+        }
+
+        async function submitToGoogleForms(data) {
+            const formData = new FormData();
+            
+            // User-provided data
+            formData.append(GOOGLE_FORM_CONFIG.entries.mediaTitle, data.mediaTitle);
+            formData.append(GOOGLE_FORM_CONFIG.entries.mediaType, data.mediaType);
+            formData.append(GOOGLE_FORM_CONFIG.entries.releaseYear, data.releaseYear || '');
+            formData.append(GOOGLE_FORM_CONFIG.entries.explanation, data.explanation);
+            
+            // Auto-populated trope data (hidden from user)
+            formData.append(GOOGLE_FORM_CONFIG.entries.tropeName, data.tropeName);
+            formData.append(GOOGLE_FORM_CONFIG.entries.tropeId, data.tropeId);
+
+            const formUrl = `https://docs.google.com/forms/d/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
+            
+            await fetch(formUrl, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            });
+        }
+
+        function trackSuggestion(tropeId) {
+            // Track suggestion in game stats
+            const stats = StorageUtils?.getItem('tropeout_stats', {}) || {};
+            stats.suggestionsMade = (stats.suggestionsMade || 0) + 1;
+            stats.lastSuggestion = new Date().toISOString();
+            if (StorageUtils?.setItem) {
+                StorageUtils.setItem('tropeout_stats', stats);
+            }
+        }
+    </script>
 </body>
 </html>
