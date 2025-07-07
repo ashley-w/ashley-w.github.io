@@ -253,57 +253,57 @@ class TropeOutGame {
     this.saveGameData();
   }
 
-shareResults() {
-  const score = this.correctAnswers.length;
-  const total = 5;
-  const date = new Date().toLocaleDateString();
-  
-  // Inviting reactions aimed at the person receiving the share
-  const inviteReactions = {
-    5: "🔥 Can you match this perfect score? 🔥",
-    4: "⭐ Think you can beat this? Give it a shot! ⭐", 
-    3: "🎯 Can you do better? Test your trope knowledge! 🎯",
-    2: "📚 Bet you know more tropes than this! Try it! 📚",
-    1: "🌱 This looks tricky! Can you figure it out? 🌱",
-    0: "💪 This one stumped me! Think you can solve it? 💪"
-  };
-  
-  // Build the cute share text
-  let shareText = `🎬✨ TropeOut Daily Challenge ✨🎮\n`;
-  shareText += `📅 ${date}\n`;
-  shareText += `🎭 Today's Trope: "${this.currentTrope.name}"\n\n`;
-  shareText += `${inviteReactions[score]}\n`;
-  shareText += `🎯 My Score: ${score}/${total}\n\n`;
-  
-  // Add cute emoji representation
-  for (let i = 0; i < total; i++) {
-    shareText += i < score ? '🟢' : '⚫';
+  shareResults() {
+    const score = this.correctAnswers.length;
+    const total = 5;
+    const date = new Date().toLocaleDateString();
+    
+    // Inviting reactions aimed at the person receiving the share
+    const inviteReactions = {
+      5: "🔥 Can you match this perfect score? 🔥",
+      4: "⭐ Think you can beat this? Give it a shot! ⭐", 
+      3: "🎯 Can you do better? Test your trope knowledge! 🎯",
+      2: "📚 Bet you know more tropes than this! Try it! 📚",
+      1: "🌱 This looks tricky! Can you figure it out? 🌱",
+      0: "💪 This one stumped me! Think you can solve it? 💪"
+    };
+    
+    // Build the cute share text
+    let shareText = `🎬✨ TropeOut Daily Challenge ✨🎮\n`;
+    shareText += `📅 ${date}\n`;
+    shareText += `🎭 Today's Trope: "${this.currentTrope.name}"\n\n`;
+    shareText += `${inviteReactions[score]}\n`;
+    shareText += `🎯 My Score: ${score}/${total}\n\n`;
+    
+    // Add cute emoji representation
+    for (let i = 0; i < total; i++) {
+      shareText += i < score ? '🟢' : '⚫';
+    }
+    
+    if (this.hintsUsed > 0) {
+      shareText += `\n💡 Used ${this.hintsUsed} hint${this.hintsUsed > 1 ? 's' : ''}`;
+    }
+    
+    shareText += '\n\n🎲 Your turn! Can you guess 5 movies/shows/games/books?';
+    shareText += '\n🌟 Daily trope puzzles • Free to play • Test your knowledge!';
+    shareText += '\n▶️ Try it at: www.tropeout.com';
+    
+    if (navigator.share) {
+      navigator.share({
+        title: '🎭 TropeOut - Can you beat my score?',
+        text: shareText,
+        url: 'https://www.tropeout.com'
+      });
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(shareText).then(() => {
+        this.showMessage('Results copied to clipboard! 📋✨', 'success');
+      }).catch(() => {
+        // Final fallback: show in alert
+        alert(shareText);
+      });
+    }
   }
-  
-  if (this.hintsUsed > 0) {
-    shareText += `\n💡 Used ${this.hintsUsed} hint${this.hintsUsed > 1 ? 's' : ''}`;
-  }
-  
-  shareText += '\n\n🎲 Your turn! Can you guess 5 movies/shows/games/books?';
-  shareText += '\n🌟 Daily trope puzzles • Free to play • Test your knowledge!';
-  shareText += '\n▶️ Try it at: www.tropeout.com';
-  
-  if (navigator.share) {
-    navigator.share({
-      title: '🎭 TropeOut - Can you beat my score?',
-      text: shareText,
-      url: 'https://www.tropeout.com'
-    });
-  } else {
-    // Fallback: copy to clipboard
-    navigator.clipboard.writeText(shareText).then(() => {
-      this.showMessage('Results copied to clipboard! 📋✨', 'success');
-    }).catch(() => {
-      // Final fallback: show in alert
-      alert(shareText);
-    });
-  }
-}
 
   showStats() {
     // Placeholder stats - will integrate with gameStorage.js later
