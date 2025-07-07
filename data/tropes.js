@@ -1259,17 +1259,3 @@ if (typeof module !== 'undefined' && module.exports) {
     getRandomTrope,
     getDatabaseStats
   }}
-
-  // Alpha testing override
-const originalGetTodaysTrope = getTodaysTrope;
-getTodaysTrope = function() {
-  const alphaIndex = localStorage.getItem('alpha_trope_index');
-  if (alphaIndex !== null) {
-    const tropeIds = Object.keys(TROPES_DATABASE);
-    const tropeIndex = parseInt(alphaIndex) % tropeIds.length;
-    const tropeId = tropeIds[tropeIndex];
-    console.log(`🧪 ALPHA MODE: Using trope ${tropeIndex} (${tropeId})`);
-    return TROPES_DATABASE[tropeId];
-  }
-  return originalGetTodaysTrope();
-};

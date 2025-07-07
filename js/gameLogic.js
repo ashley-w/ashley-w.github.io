@@ -454,6 +454,21 @@ class TropeOutGame {
   }}
 
 
+// Alpha testing override (add this AFTER the class closing brace)
+const originalGetTodaysTrope = window.getTodaysTrope;
+if (originalGetTodaysTrope) {
+  window.getTodaysTrope = function() {
+    const alphaIndex = localStorage.getItem('alpha_trope_index');
+    if (alphaIndex !== null) {
+      const tropeIds = Object.keys(TROPES_DATABASE);
+      const tropeIndex = parseInt(alphaIndex) % tropeIds.length;
+      const tropeId = tropeIds[tropeIndex];
+      console.log(`🧪 ALPHA MODE: Using trope ${tropeIndex} (${tropeId})`);
+      return TROPES_DATABASE[tropeId];
+    }
+    return originalGetTodaysTrope();
+  };
+}
 
 // Initialize game when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
