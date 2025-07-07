@@ -19,7 +19,7 @@ class TropeScheduler {
   /**
    * Get today's trope ID based on deterministic rotation
    * @returns {string} Trope ID for today
-   */
+   
   getTodaysTropeId() {
     const dayNumber = this.getCurrentDay();
     const tropeIndex = dayNumber % this.tropeIds.length;
@@ -29,12 +29,32 @@ class TropeScheduler {
   /**
    * Get today's complete trope object
    * @returns {Object} Today's trope data
-   */
+  
   getTodaysTrape() {
     const tropeId = this.getTodaysTropeId();
     return TROPES_DATABASE[tropeId];
   }
+*/
 
+/**
+   * Get today's complete trope object (with alpha override)
+   * @returns {Object} Today's trope data
+   */
+  getTodaysTrape() {
+    // ALPHA TESTING: Check for manual trope override
+    const alphaIndex = localStorage.getItem('alpha_trope_index');
+    if (alphaIndex !== null) {
+      const tropeIndex = parseInt(alphaIndex) % this.tropeIds.length;
+      const tropeId = this.tropeIds[tropeIndex];
+      console.log(`🧪 ALPHA MODE: Using trope index ${tropeIndex} (${tropeId})`);
+      return TROPES_DATABASE[tropeId];
+    }
+    
+    // Normal daily rotation
+    const tropeId = this.getTodaysTropeId();
+    return TROPES_DATABASE[tropeId];
+  }
+  
   /**
    * Get trope for a specific date
    * @param {Date} date - Target date
