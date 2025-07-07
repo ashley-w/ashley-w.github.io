@@ -122,6 +122,13 @@ class TropeOutGame {
         this.hideStats();
       }
     });
+
+    // Alpha testing link
+    const alphaLink = document.getElementById('alphaLink');
+    alphaLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.handleAlphaAccess();
+    });
   }
 
   handleSubmission() {
@@ -359,6 +366,27 @@ shareResults() {
     setTimeout(() => {
       messageEl.remove();
     }, 3000);
+  }
+
+  handleAlphaAccess() {
+    const password = prompt('Enter alpha testing password:');
+    
+    // You can change this password to whatever you want
+    if (password === 'trope2025' || password === 'alpha') {
+      // Clear all game data for fresh testing
+      localStorage.clear();
+      
+      // Show confirmation and reload
+      this.showMessage('Alpha mode activated! Reloading...', 'success');
+      
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } else if (password !== null) {
+      // User entered something but it was wrong
+      this.showMessage('Incorrect password', 'error');
+    }
+    // If user cancels (password === null), do nothing
   }
 }
 

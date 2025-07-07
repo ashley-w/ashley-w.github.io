@@ -461,3 +461,23 @@ body {
     text-align: center;
   }
 }
+
+/* Alpha Testing Link */
+.alpha-link {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 999;
+}
+
+.alpha-link a {
+  color: rgba(255, 255, 255, 0.3);
+  text-decoration: none;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.8rem;
+  transition: color 0.3s ease;
+}
+
+.alpha-link a:hover {
+  color: var(--neon-cyan);
+}
