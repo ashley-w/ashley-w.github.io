@@ -18,7 +18,7 @@ class TropeScheduler {
 
   /**
    * Get today's trope ID based on deterministic rotation
-   * @returns {string} Trope ID for today
+   /** @returns {string} Trope ID for today
    
   getTodaysTropeId() {
     const dayNumber = this.getCurrentDay();
@@ -28,7 +28,7 @@ class TropeScheduler {
 
   /**
    * Get today's complete trope object
-   * @returns {Object} Today's trope data
+   /** @returns {Object} Today's trope data
   
   getTodaysTrope() {
     const tropeId = this.getTodaysTropeId();

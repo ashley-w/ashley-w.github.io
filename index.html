@@ -238,136 +238,94 @@
         });
 
         async function submitSuggestion(data) {
-            const submitBtn = document.querySelector('.submit-suggestion');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting...';
+    const submitBtn = document.querySelector('.submit-suggestion');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
 
-            try {
-                await submitToGoogleForms(data);
-                
-                // Show success message
-                document.getElementById('successMessage').style.display = 'block';
-                document.getElementById('suggestionForm').reset();
-                
-                // Track suggestion in game stats
-                trackSuggestion(data.tropeId);
-                
-                // Auto-close modal after 3 seconds
-                setTimeout(() => {
-                    closeSuggestionModal();
-                }, 3000);
-                
-            } catch (error) {
-                alert('Sorry, there was an error submitting your suggestion. Please try again later.');
-                console.error('Submission error:', error);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Suggestion';
-            }
-        }
+    try {
+        console.log('🎯 Attempting suggestion submission...');
+        
+        // Try the simple method first
+        await submitToGoogleFormsSimple(data);
+        
+        // Show success message
+        document.getElementById('successMessage').style.display = 'block';
+        document.getElementById('suggestionForm').reset();
+        
+        // Track suggestion in game stats
+        trackSuggestion(data.tropeId);
+        
+        console.log('🎉 Suggestion submitted successfully!');
+        
+        // Auto-close modal after 3 seconds
+        setTimeout(() => {
+            closeSuggestionModal();
+        }, 3000);
+        
+    } catch (error) {
+        console.error('❌ Submission error:', error);
+        alert('Sorry, there was an error submitting your suggestion. Please try again later.');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Suggestion';
+    }
+}
 
         // REPLACE the submitToGoogleForms function in your HTML file with this:
 
-async function submitToGoogleForms(data) {
-    console.log('Submitting data:', data); // Debug log
+// Alternative method using direct form submission (simpler approach)
+async function submitToGoogleFormsSimple(data) {
+    console.log('🚀 Using simple submission method...');
     
-    return new Promise((resolve, reject) => {
-        try {
-            // Create hidden iframe
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.name = 'suggestion_iframe_' + Date.now();
-            iframe.src = 'about:blank';
-            
-            // Create form
-            const form = document.createElement('form');
-            const formUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
-            form.action = formUrl;
-            form.method = 'POST';
-            form.target = iframe.name;
-            form.style.display = 'none';
-            
-            console.log('Submitting to:', formUrl);
-            
-            // Add form fields as hidden inputs
-            const formFields = {
-                [GOOGLE_FORM_CONFIG.entries.mediaTitle]: data.mediaTitle,
-                [GOOGLE_FORM_CONFIG.entries.mediaType]: data.mediaType,
-                [GOOGLE_FORM_CONFIG.entries.releaseYear]: data.releaseYear || '',
-                [GOOGLE_FORM_CONFIG.entries.explanation]: data.explanation,
-                [GOOGLE_FORM_CONFIG.entries.tropeName]: data.tropeName,
-                [GOOGLE_FORM_CONFIG.entries.tropeId]: data.tropeId
-            };
-            
-            // Debug: Log what we're sending
-            console.log('Form entries being sent:');
-            Object.entries(formFields).forEach(([entryId, value]) => {
-                console.log(entryId, ':', value);
-                
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = entryId;
-                input.value = value || '';
-                form.appendChild(input);
-            });
-            
-            // Handle submission completion
-            let submitted = false;
-            
-            const cleanup = () => {
-                setTimeout(() => {
-                    try {
-                        if (form.parentNode) document.body.removeChild(form);
-                        if (iframe.parentNode) document.body.removeChild(iframe);
-                    } catch (e) {
-                        // Elements already removed
-                    }
-                }, 1000);
-            };
-            
-            iframe.onload = () => {
-                if (!submitted) {
-                    submitted = true;
-                    console.log('✅ Suggestion submitted successfully via iframe!');
-                    cleanup();
-                    resolve(true);
-                }
-            };
-            
-            iframe.onerror = (error) => {
-                console.error('❌ Iframe submission error:', error);
-                cleanup();
-                reject(error);
-            };
-            
-            // Add to DOM and submit
-            document.body.appendChild(iframe);
-            document.body.appendChild(form);
-            
-            // Submit after a brief delay to ensure iframe is ready
-            setTimeout(() => {
-                if (!submitted) {
-                    form.submit();
-                    console.log('📤 Form submitted via iframe method');
-                }
-            }, 100);
-            
-            // Timeout fallback - assume success after 5 seconds
-            setTimeout(() => {
-                if (!submitted) {
-                    submitted = true;
-                    console.log('⏰ Form submission timeout - assuming success');
-                    cleanup();
-                    resolve(true);
-                }
-            }, 5000);
-            
-        } catch (error) {
-            console.error('❌ Submission setup error:', error);
-            reject(error);
-        }
+    return new Promise((resolve) => {
+        // Create form
+        const form = document.createElement('form');
+        form.action = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
+        form.method = 'POST';
+        form.style.display = 'none';
+        
+        // Add data fields
+        const formData = {
+            [GOOGLE_FORM_CONFIG.entries.mediaTitle]: data.mediaTitle || '',
+            [GOOGLE_FORM_CONFIG.entries.mediaType]: data.mediaType || '',
+            [GOOGLE_FORM_CONFIG.entries.releaseYear]: data.releaseYear || '',
+            [GOOGLE_FORM_CONFIG.entries.explanation]: data.explanation || '',
+            [GOOGLE_FORM_CONFIG.entries.tropeName]: data.tropeName || '',
+            [GOOGLE_FORM_CONFIG.entries.tropeId]: data.tropeId || ''
+        };
+        
+        Object.entries(formData).forEach(([name, value]) => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = String(value);
+            form.appendChild(input);
+        });
+        
+        // Create hidden iframe target
+        const iframe = document.createElement('iframe');
+        iframe.name = 'submission_target_' + Date.now();
+        iframe.style.display = 'none';
+        form.target = iframe.name;
+        
+        // Add to DOM and submit
+        document.body.appendChild(iframe);
+        document.body.appendChild(form);
+        
+        form.submit();
+        
+        // Clean up after submission
+        setTimeout(() => {
+            if (form.parentNode) document.body.removeChild(form);
+            if (iframe.parentNode) document.body.removeChild(iframe);
+        }, 1000);
+        
+        console.log('✅ Form submitted via simple method');
+        // Always resolve as success since we can't reliably detect Google Forms response
+        resolve(true);
     });
 }
+
 
         function trackSuggestion(tropeId) {
             // Track suggestion in game stats
@@ -379,5 +337,13 @@ async function submitToGoogleForms(data) {
             }
         }
     </script>
+
+    <!-- Alpha Testing Link -->
+    <div class="alpha-link">
+        <a href="#" id="alphaLink">🧪 Alpha Testing</a>
+    </div>
+
+</body>
+</html>
 </body>
 </html>
