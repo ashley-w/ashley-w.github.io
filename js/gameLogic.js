@@ -404,7 +404,7 @@ class TropeOutGame {
   // It also provides feedback messages for user actions.
 
   handleAlphaAccess() {
-    const password = prompt('Alpha commands:\n• "trope2025" or "alpha" = reset game\n• "next" = next trope\n• "prev" = previous trope\n• "0-4" = specific trope number\n\nEnter command:');
+    const password = prompt('Alpha commands:\n• "trope2025" or "alpha" = reset game\n• "next" = next trope\n• "prev" = previous trope\n• "0-4" = specific trope number\n• "exit" = leave alpha mode\n\nEnter command:');
     
     if (password === null) return; // User cancelled
     
