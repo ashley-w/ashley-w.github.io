@@ -442,26 +442,23 @@ class TropeOutGame {
       }
     }
     
-   // Handle reset commands
-    if (password === 'trope2025' || password === 'alpha') {
-      // Clear all game data BUT keep alpha mode if it was active
-      const wasInAlphaMode = localStorage.getItem('alpha_trope_index') !== null;
-      
-      // Clear all data
-      localStorage.clear();
-      
-      // If we were in alpha mode, stay in alpha mode at trope 0
-      if (wasInAlphaMode) {
-        localStorage.setItem('alpha_trope_index', '0');
-        this.showMessage('🧹 Alpha reset to trope 1! Reloading...', 'success');
-      } else {
-        this.showMessage('🧹 Alpha mode activated! Reloading...', 'success');
-      }
-      
-      setTimeout(() => window.location.reload(), 1000);
-    } else {
-      this.showMessage('❌ Invalid command', 'error');
-    }
+   // Handle exit alpha mode
+  if (password === 'exit') {
+    localStorage.removeItem('alpha_trope_index');
+    this.showMessage('🚪 Exiting alpha mode. Returning to daily trope...', 'success');
+    setTimeout(() => window.location.reload(), 1000);
+    return;
+  }
+
+  // Handle reset commands
+  if (password === 'trope2025' || password === 'alpha') {
+    // Clear all game data for fresh testing
+    localStorage.clear();
+    this.showMessage('🧹 Game reset! Returning to daily trope...', 'success');
+    setTimeout(() => window.location.reload(), 1000);
+  } else {
+    this.showMessage('❌ Invalid command', 'error');
+  }
   }}
 
 
