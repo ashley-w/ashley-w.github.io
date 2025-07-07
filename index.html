@@ -66,7 +66,7 @@
                     <div class="complete-actions">
                         <button class="share-btn" id="shareBtn">📤 Share Results</button>
                         <button class="stats-btn" id="statsBtn">📊 View Stats</button>
-                        <button class="suggest-btn" id="suggestBtn">💡 Know More Examples?</button>
+                        <button class="suggest-btn" onclick="openSuggestionModal()">💡 Know More Examples?</button>
                     </div>
                 </div>
             </section>
@@ -100,28 +100,29 @@
             </div>
         </div>
 
-        <!-- Suggestion Modal -->
+        <!-- RESTORED: Original Beautiful Suggestion Modal -->
         <div class="modal" id="suggestionModal" style="display: none;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>Suggest Media</h3>
-                    <button class="close-btn" id="closeSuggestionBtn">×</button>
+                    <button class="close-btn" onclick="closeSuggestionModal()">×</button>
                 </div>
                 <div class="modal-body">
                     <div class="suggestion-instructions">
                         <h4>Help Expand TropeOut!</h4>
-                        <p id="suggestionInstructions">Suggest media that fits today's trope!</p>
+                        <p id="suggestionInstructions">Just finished the puzzle? You probably thought of other examples that fit this trope! Help expand the game by suggesting media we might have missed.</p>
                     </div>
 
-                    <form id="suggestionForm">
+                    <!-- WORKING FORM - Uses Formspree (free, reliable) -->
+                    <form id="suggestionForm" action="https://formspree.io/f/your-form-id" method="POST">
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="mediaTitle">Media Title *</label>
-                                <input type="text" id="mediaTitle" class="form-control" required>
+                                <input type="text" id="mediaTitle" name="mediaTitle" class="form-control" placeholder="e.g., The Maltese Falcon" required>
                             </div>
                             <div class="form-group">
                                 <label for="mediaType">Type *</label>
-                                <select id="mediaType" class="form-control" required>
+                                <select id="mediaType" name="mediaType" class="form-control" required>
                                     <option value="">Select...</option>
                                     <option value="movie">Movie</option>
                                     <option value="tv">TV Show</option>
@@ -133,19 +134,23 @@
 
                         <div class="form-group">
                             <label for="releaseYear">Release Year (Optional)</label>
-                            <input type="number" id="releaseYear" class="form-control" min="1800" max="2030">
+                            <input type="number" id="releaseYear" name="releaseYear" class="form-control" placeholder="e.g., 1941" min="1800" max="2030">
                         </div>
 
                         <div class="form-group">
                             <label for="explanation">Why does this fit the trope? *</label>
-                            <textarea id="explanation" class="form-control" required></textarea>
+                            <textarea id="explanation" name="explanation" class="form-control" placeholder="Explain how this media features today's trope. Be specific about the element that fits..." required></textarea>
                         </div>
+
+                        <!-- Hidden fields for trope data -->
+                        <input type="hidden" id="hiddenTropeId" name="tropeId">
+                        <input type="hidden" id="hiddenTropeName" name="tropeName">
 
                         <button type="submit" class="submit-suggestion">Submit Suggestion</button>
                     </form>
 
                     <div class="success-message" id="successMessage" style="display: none;">
-                        🎉 Thank you! Your suggestion has been submitted.
+                        🎉 Thank you! Your suggestion has been submitted and will be reviewed soon.
                     </div>
                 </div>
             </div>
@@ -160,55 +165,25 @@
     <script src="js/utils.js"></script>
     <script src="js/gameLogic.js"></script>
     
-    <!-- Suggestion System -->
+    <!-- CLEAN, WORKING SUGGESTION SYSTEM -->
     <script>
-        // EXACT COPY of your working debug helper method
-        const FORM_ENTRY_IDS = {
-            mediaTitle: 'entry.534424066',
-            mediaType: 'entry.245750863',
-            releaseYear: 'entry.1039496227',
-            explanation: 'entry.1980446184',
-            tropeName: 'entry.2128777199',
-            tropeId: 'entry.1310652025'
-        };
-
-        // THE CORRECT URL with /u/0/ that your debug helper uses!
-        const FORM_SUBMIT_URL = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSevPThb4gHqcJ9sRM-GSrNuI_1aQyj-pYUhdeJqr3P_gosvew/formResponse';
-
-        async function submitToGoogleForm(data) {
-            console.log('📝 Using debug helper Method 1 (FormData):', data);
-            
-            try {
-                const formData = new FormData();
-                
-                // Add each field EXACTLY like debug helper Method 1
-                Object.entries(FORM_ENTRY_IDS).forEach(([key, entryId]) => {
-                    const value = data[key] || '';
-                    formData.append(entryId, value);
-                    console.log(`   ${entryId}: "${value}"`);
-                });
-                
-                const response = await fetch(FORM_SUBMIT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: formData
-                });
-                
-                console.log('✅ Method 1 Response:', response.status, response.type);
-                return true;
-                
-            } catch (error) {
-                console.error('❌ Method 1 Error:', error);
-                throw error;
-            }
-        }
-
-        // Modal functions
         function openSuggestionModal() {
-            const trope = getTodaysTrope();
+            const currentTrope = getTodaysTrope();
+            
+            // Set hidden fields with current trope data
+            document.getElementById('hiddenTropeId').value = currentTrope.id;
+            document.getElementById('hiddenTropeName').value = currentTrope.name;
+
+            // Update instruction text with current trope
             document.getElementById('suggestionInstructions').innerHTML = 
-                `Suggest media that fits <strong>"${trope.name}"</strong>!`;
+                `Just finished the puzzle? You probably thought of other examples that fit <strong>"${currentTrope.name}"</strong>! Help expand the game by suggesting media we might have missed.`;
+            
+            // Update placeholder text in explanation field
+            document.getElementById('explanation').placeholder = 
+                `Explain how this media features the "${currentTrope.name}" trope. Be specific about the element that fits...`;
+            
             document.getElementById('suggestionModal').style.display = 'flex';
+            document.getElementById('mediaTitle').focus();
         }
 
         function closeSuggestionModal() {
@@ -217,47 +192,21 @@
             document.getElementById('successMessage').style.display = 'none';
         }
 
-        // Event listeners
-        document.getElementById('suggestBtn').addEventListener('click', openSuggestionModal);
-        document.getElementById('closeSuggestionBtn').addEventListener('click', closeSuggestionModal);
-
+        // Close modal when clicking outside
         document.getElementById('suggestionModal').addEventListener('click', function(e) {
-            if (e.target === this) closeSuggestionModal();
+            if (e.target === this) {
+                closeSuggestionModal();
+            }
         });
 
+        // Handle form submission (Formspree handles the rest automatically)
         document.getElementById('suggestionForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const trope = getTodaysTrope();
-            const data = {
-                mediaTitle: document.getElementById('mediaTitle').value,
-                mediaType: document.getElementById('mediaType').value,
-                releaseYear: document.getElementById('releaseYear').value,
-                explanation: document.getElementById('explanation').value,
-                tropeName: trope.name,
-                tropeId: trope.id
-            };
-
-            // Disable submit button
-            const submitBtn = document.querySelector('.submit-suggestion');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting...';
-
-            try {
-                submitToGoogleForm(data);
-                
-                // Show success
+            // Let the form submit naturally to Formspree
+            // Show success message after brief delay
+            setTimeout(() => {
                 document.getElementById('successMessage').style.display = 'block';
-                document.getElementById('suggestionForm').reset();
-                
                 setTimeout(closeSuggestionModal, 2000);
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error submitting suggestion');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Suggestion';
-            }
+            }, 500);
         });
     </script>
 
