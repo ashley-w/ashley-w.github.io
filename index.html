@@ -113,16 +113,16 @@
                         <p id="suggestionInstructions">Just finished the puzzle? You probably thought of other examples that fit this trope! Help expand the game by suggesting media we might have missed.</p>
                     </div>
 
-                    <!-- WORKING FORM - Uses Formspree (free, reliable) -->
-                    <form id="suggestionForm" action="https://formspree.io/f/your-form-id" method="POST">
+                    <!-- FIXED: Google Forms with Hidden Iframe -->
+                    <form id="suggestionForm" action="https://docs.google.com/forms/d/e/1FAIpQLSevPThb4gHqcJ9sRM-GSrNuI_1aQyj-pYUhdeJqr3P_gosvew/formResponse" method="POST" target="hidden_iframe">
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="mediaTitle">Media Title *</label>
-                                <input type="text" id="mediaTitle" name="mediaTitle" class="form-control" placeholder="e.g., The Maltese Falcon" required>
+                                <input type="text" id="mediaTitle" name="entry.534424066" class="form-control" placeholder="e.g., The Maltese Falcon" required>
                             </div>
                             <div class="form-group">
                                 <label for="mediaType">Type *</label>
-                                <select id="mediaType" name="mediaType" class="form-control" required>
+                                <select id="mediaType" name="entry.245750863" class="form-control" required>
                                     <option value="">Select...</option>
                                     <option value="movie">Movie</option>
                                     <option value="tv">TV Show</option>
@@ -134,17 +134,17 @@
 
                         <div class="form-group">
                             <label for="releaseYear">Release Year (Optional)</label>
-                            <input type="number" id="releaseYear" name="releaseYear" class="form-control" placeholder="e.g., 1941" min="1800" max="2030">
+                            <input type="number" id="releaseYear" name="entry.1039496227" class="form-control" placeholder="e.g., 1941" min="1800" max="2030">
                         </div>
 
                         <div class="form-group">
                             <label for="explanation">Why does this fit the trope? *</label>
-                            <textarea id="explanation" name="explanation" class="form-control" placeholder="Explain how this media features today's trope. Be specific about the element that fits..." required></textarea>
+                            <textarea id="explanation" name="entry.1980446184" class="form-control" placeholder="Explain how this media features today's trope. Be specific about the element that fits..." required></textarea>
                         </div>
 
                         <!-- Hidden fields for trope data -->
-                        <input type="hidden" id="hiddenTropeId" name="tropeId">
-                        <input type="hidden" id="hiddenTropeName" name="tropeName">
+                        <input type="hidden" id="hiddenTropeId" name="entry.1310652025">
+                        <input type="hidden" id="hiddenTropeName" name="entry.2128777199">
 
                         <button type="submit" class="submit-suggestion">Submit Suggestion</button>
                     </form>
@@ -156,6 +156,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Hidden iframe for Google Forms submission -->
+    <iframe name="hidden_iframe" style="display:none;" onload="handleFormSubmission()"></iframe>
 
     <!-- JavaScript Files -->
     <script src="data/tropes.js"></script>
@@ -199,15 +202,12 @@
             }
         });
 
-        // Handle form submission (Formspree handles the rest automatically)
-        document.getElementById('suggestionForm').addEventListener('submit', function(e) {
-            // Let the form submit naturally to Formspree
-            // Show success message after brief delay
-            setTimeout(() => {
-                document.getElementById('successMessage').style.display = 'block';
-                setTimeout(closeSuggestionModal, 2000);
-            }, 500);
-        });
+        // Handle iframe-based form submission
+        function handleFormSubmission() {
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('suggestionForm').reset();
+            setTimeout(closeSuggestionModal, 3000);
+        }
     </script>
 
     <!-- Alpha Testing Link -->
