@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TropeOut - Daily Trope Game</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="assets/icons/favicon.ico">
+</head>
+<body>
+    <div class="container">
+        <header class="game-header">
+            <h1 class="game-title">🎭 TropeOut</h1>
+            <p class="game-subtitle">Guess 5 pieces of media that feature today's trope</p>
+        </header>
+
+        <main class="game-main">
+            <!-- Daily Trope Display -->
+            <section class="trope-section">
+                <div class="trope-card">
+                    <h2 class="trope-name" id="tropeName">Loading...</h2>
+                    <p class="trope-definition" id="tropeDefinition">Loading today's trope...</p>
+                </div>
+            </section>
+
+            <!-- Game Progress -->
+            <section class="progress-section">
+                <div class="progress-info">
+                    <span class="progress-text"><span id="correctCount">0</span> / 5 correct</span>
+                    <button class="hint-btn" id="hintBtn">💡 Hint</button>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </section>
+
+            <!-- Input Section -->
+            <section class="input-section">
+                <form id="gameForm" class="game-form">
+                    <div class="input-group">
+                        <input type="text" id="mediaInput" class="media-input" 
+                               placeholder="Enter a movie, TV show, book, or game..." 
+                               autocomplete="off" maxlength="100">
+                        <button type="submit" class="submit-btn" id="submitBtn">Submit</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Submissions Display -->
+            <section class="submissions-section">
+                <h3>Your Guesses:</h3>
+                <div class="submissions-grid" id="submissionsGrid">
+                    <div class="submission-slot empty">1. <span class="slot-content">—</span></div>
+                    <div class="submission-slot empty">2. <span class="slot-content">—</span></div>
+                    <div class="submission-slot empty">3. <span class="slot-content">—</span></div>
+                    <div class="submission-slot empty">4. <span class="slot-content">—</span></div>
+                    <div class="submission-slot empty">5. <span class="slot-content">—</span></div>
+                </div>
+            </section>
+
+            <!-- Game Complete Section (hidden initially) -->
+            <section class="game-complete" id="gameComplete" style="display: none;">
+                <div class="complete-card">
+                    <h3 class="complete-title">🎉 Great job!</h3>
+                    <p class="complete-score">You found <span id="finalScore">0</span> out of 5!</p>
+                    <div class="complete-actions">
+                        <button class="share-btn" id="shareBtn">📤 Share Results</button>
+                        <button class="stats-btn" id="statsBtn">📊 View Stats</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Stats Modal (hidden initially) -->
+        <div class="modal" id="statsModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Your Stats</h3>
+                    <button class="close-btn" id="closeStatsBtn">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="stat-item">
+                        <span class="stat-label">Games Played:</span>
+                        <span class="stat-value" id="gamesPlayed">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Win Rate:</span>
+                        <span class="stat-value" id="winRate">0%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Current Streak:</span>
+                        <span class="stat-value" id="currentStreak">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Best Streak:</span>
+                        <span class="stat-value" id="bestStreak">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="data/tropes.js"></script>
+    <script src="js/gameStorage.js"></script>
+    <script src="js/tropeScheduler.js"></script>
+    <script src="js/validator.js"></script>
+    <script src="js/gameLogic.js"></script>
+    <script src="js/utils.js"></script>
+</body>
+</html>
