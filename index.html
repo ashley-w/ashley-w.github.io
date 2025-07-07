@@ -194,6 +194,13 @@
             document.getElementById('suggestionForm').reset();
             document.getElementById('successMessage').style.display = 'none';
         }
+        
+         // Handle iframe-based form submission
+        function handleFormSubmission() {
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('suggestionForm').reset();
+            setTimeout(closeSuggestionModal, 3000);
+        }
 
         // Close modal when clicking outside
         document.getElementById('suggestionModal').addEventListener('click', function(e) {
@@ -202,13 +209,9 @@
             }
         });
 
-        // Handle iframe-based form submission
-        function handleFormSubmission() {
-            document.getElementById('successMessage').style.display = 'block';
-            document.getElementById('suggestionForm').reset();
-            setTimeout(closeSuggestionModal, 3000);
-        }
+       
     </script>
+    
 
     <!-- Alpha Testing Link -->
     <div class="alpha-link">
