@@ -30,7 +30,7 @@ class TropeScheduler {
    * Get today's complete trope object
    * @returns {Object} Today's trope data
   
-  getTodaysTrape() {
+  getTodaysTrope() {
     const tropeId = this.getTodaysTropeId();
     return TROPES_DATABASE[tropeId];
   }
@@ -40,7 +40,7 @@ class TropeScheduler {
    * Get today's complete trope object (with alpha override)
    * @returns {Object} Today's trope data
    */
-  getTodaysTrape() {
+  getTodaysTrope() {
     // ALPHA TESTING: Check for manual trope override
     const alphaIndex = localStorage.getItem('alpha_trope_index');
     if (alphaIndex !== null) {
@@ -54,7 +54,7 @@ class TropeScheduler {
     const tropeId = this.getTodaysTropeId();
     return TROPES_DATABASE[tropeId];
   }
-  
+
   /**
    * Get trope for a specific date
    * @param {Date} date - Target date
@@ -168,7 +168,7 @@ const tropeScheduler = new TropeScheduler();
 
 // Override the simple function from tropes.js with the scheduler
 function getTodaysTrope() {
-  return tropeScheduler.getTodaysTrape();
+  return tropeScheduler.getTodaysTrope();
 }
 
 // Export functions for use in other files
@@ -177,7 +177,7 @@ window.getTodaysTrope = getTodaysTrope;
 
 // Debug functions (remove in production)
 window.debugTropes = () => {
-  console.log('Today\'s trope:', tropeScheduler.getTodaysTrape());
+  console.log('Today\'s trope:', tropeScheduler.getTodaysTrope());
   console.log('Game day #:', tropeScheduler.getGameDayNumber());
   console.log('Next trope:', tropeScheduler.getNextTrope());
   console.log('Time until next:', tropeScheduler.getTimeUntilNextTrope());
