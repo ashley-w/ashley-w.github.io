@@ -197,10 +197,8 @@ class TropeOutGame {
     if (isCorrect) {
       this.correctAnswers.push(formattedSubmission);
       this.showMessage('Correct! ✅', 'success');
-      audioManager.playCorrectSound(); // ADD THIS
     } else {
       this.showMessage('Not quite... ❌', 'error');
-      audioManager.playWrongSound(); // ADD THIS
     }
 
     // Update UI
@@ -435,12 +433,6 @@ class TropeOutGame {
     // Get score-appropriate message
     const score = this.correctAnswers.length;
     const { title, message } = this.getCompletionMessage(score);
-    if (score >= 4) {
-      audioManager.playVictorySound(); // High score = victory
-    } else {
-      audioManager.playDefeatSound(); // Low score = defeat
-    }
-
     
     // Update completion screen
     document.getElementById('completionTitle').textContent = title;
@@ -703,10 +695,6 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('🎬 DOM loaded, creating TropeOutGame...');
   window.tropeoutGame = new TropeOutGame();
 });
-
-document.addEventListener('click', () => {
-  audioManager.resumeAudio();
-}, { once: true });
 
 // Add CSS animation for messages
 const style = document.createElement('style');
