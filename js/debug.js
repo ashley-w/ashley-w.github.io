@@ -84,6 +84,12 @@ function showAlphaPanel() {
         </div>
         
         <div style="margin-bottom: 1rem;">
+            <button onclick="exitAlphaMode()" class="alpha-btn" style="width: 100%; background: linear-gradient(45deg, var(--neon-orange), var(--warning-color));">
+                🚪 Exit Alpha Mode
+            </button>
+        </div>
+        
+        <div style="margin-bottom: 1rem;">
             <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Manual Answer:</label>
             <div style="display: flex; gap: 0.5rem;">
                 <input type="text" id="manualAnswer" placeholder="Enter answer..." style="flex: 1; padding: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--grid-color); border-radius: 4px; color: var(--text-primary);">
@@ -97,6 +103,7 @@ function showAlphaPanel() {
         
         <div style="font-size: 0.8rem; color: var(--text-muted); text-align: center;">
             Debug Mode Active
+            ${localStorage.getItem('alpha_trope_index') !== null ? ' | Alpha Mode ON' : ' | Daily Mode'}
         </div>
     `;
     
@@ -344,5 +351,20 @@ function closeAlphaPanel() {
         panel.remove();
     }
 }
+
+function exitAlphaMode() {
+    // Remove the alpha trope index from localStorage
+    localStorage.removeItem('alpha_trope_index');
+    
+    // Reset game state to clear any alpha-specific data
+    resetGameState();
+    
+    // Show confirmation message
+    alert('Alpha mode exited! Returning to daily trope rotation.');
+    
+    // Reload the page to return to normal daily trope
+    location.reload();
+}
+
 
 console.log("Debug.js loaded successfully!");
