@@ -219,6 +219,25 @@ class TropeOutGame {
     historyContainer.appendChild(guessCount);
   }
 
+  playTypingSound() {
+      try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+        gainNode.gain.setValueAtTime(0.01, audioContext.currentTime); // Very quiet
+        
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.05); // Very brief
+      } catch (error) {
+        // Silent fail if audio context not supported
+      }
+    }
+
   typeTextInSlot(slotIndex, text, callback) {
     const slots = document.querySelectorAll('.submission-slot');
     const slot = slots[slotIndex];
@@ -255,25 +274,6 @@ class TropeOutGame {
     
     // Start typing after a brief delay
     setTimeout(typeChar, 200);
-  }
-
-  playTypingSound() {
-    try {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      
-      oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-      gainNode.gain.setValueAtTime(0.01, audioContext.currentTime); // Very quiet
-      
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.05); // Very brief
-    } catch (error) {
-      // Silent fail if audio context not supported
-    }
   }
 
   updateSubmissionsDisplay() {
