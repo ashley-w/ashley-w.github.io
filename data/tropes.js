@@ -4106,93 +4106,529 @@ const TROPES_DATABASE = {
 
   // HARD TROPES (Require deeper media knowledge)
   "chekhov-gun": {
-    id: "chekhov-gun",
-    name: "Chekhov's Gun",
-    definition: "A seemingly unimportant object or detail introduced early in a story that becomes significant later, usually in the resolution.",
-    difficulty: "hard",
-    hints: [
-      "Named after playwright Anton Chekhov's principle",
-      "Something mentioned early becomes important later",
-      "Often used in mysteries and thrillers"
-    ],
-    examples: [
+  id: "chekhov-gun",
+  name: "Chekhov's Gun",
+  definition: "A seemingly unimportant object or detail introduced early in a story that becomes significant later, usually in the resolution.",
+  difficulty: "hard",
+  hints: [
+    "Named after playwright Anton Chekhov's principle",
+    "Something mentioned early becomes important later",
+    "Often used in mysteries and thrillers"
+  ],
+  examples: [
+      // MOVIES (125 examples)
       { title: "The Sixth Sense", type: "movie", year: 1999 },
       { title: "Shutter Island", type: "movie", year: 2010 },
-      { title: "Breaking Bad", type: "tv", year: 2008 },
-      { title: "Lost", type: "tv", year: 2004 },
-      { title: "Westworld", type: "tv", year: 2016 },
       { title: "The Prestige", type: "movie", year: 2006 },
       { title: "Knives Out", type: "movie", year: 2019 },
       { title: "Memento", type: "movie", year: 2000 },
       { title: "The Usual Suspects", type: "movie", year: 1995 },
       { title: "Psycho", type: "movie", year: 1960 },
       { title: "Rear Window", type: "movie", year: 1954 },
+      { title: "Zodiac", type: "movie", year: 2007 },
+      { title: "Gone Girl", type: "movie", year: 2014 },
+      { title: "North by Northwest", type: "movie", year: 1959 },
+      { title: "Vertigo", type: "movie", year: 1958 },
+      { title: "Dial M for Murder", type: "movie", year: 1954 },
+      { title: "Strangers on a Train", type: "movie", year: 1951 },
+      { title: "The Birds", type: "movie", year: 1963 },
+      { title: "Notorious", type: "movie", year: 1946 },
+      { title: "Rebecca", type: "movie", year: 1940 },
+      { title: "Shadow of a Doubt", type: "movie", year: 1943 },
+      { title: "Rope", type: "movie", year: 1948 },
+      { title: "The 39 Steps", type: "movie", year: 1935 },
+      { title: "Seven", type: "movie", year: 1995 },
+      { title: "Fight Club", type: "movie", year: 1999 },
+      { title: "Prisoners", type: "movie", year: 2013 },
+      { title: "Shutter", type: "movie", year: 2004 },
+      { title: "The Others", type: "movie", year: 2001 },
+      { title: "The Village", type: "movie", year: 2004 },
+      { title: "Unbreakable", type: "movie", year: 2000 },
+      { title: "Signs", type: "movie", year: 2002 },
+      { title: "Split", type: "movie", year: 2016 },
+      { title: "Glass", type: "movie", year: 2019 },
+      { title: "The Visit", type: "movie", year: 2015 },
+      { title: "Old", type: "movie", year: 2021 },
+      { title: "The Happening", type: "movie", year: 2008 },
+      { title: "Lady in the Water", type: "movie", year: 2006 },
+      { title: "Get Out", type: "movie", year: 2017 },
+      { title: "Us", type: "movie", year: 2019 },
+      { title: "Nope", type: "movie", year: 2022 },
+      { title: "Hereditary", type: "movie", year: 2018 },
+      { title: "Midsommar", type: "movie", year: 2019 },
+      { title: "The Witch", type: "movie", year: 2015 },
+      { title: "It Follows", type: "movie", year: 2014 },
+      { title: "A Quiet Place", type: "movie", year: 2018 },
+      { title: "A Quiet Place Part II", type: "movie", year: 2020 },
+      { title: "The Conjuring", type: "movie", year: 2013 },
+      { title: "The Conjuring 2", type: "movie", year: 2016 },
+      { title: "Insidious", type: "movie", year: 2010 },
+      { title: "Sinister", type: "movie", year: 2012 },
+      { title: "The Babadook", type: "movie", year: 2014 },
+      { title: "Blade Runner", type: "movie", year: 1982 },
+      { title: "Blade Runner 2049", type: "movie", year: 2017 },
+      { title: "Minority Report", type: "movie", year: 2002 },
+      { title: "Total Recall", type: "movie", year: 1990 },
+      { title: "The Matrix", type: "movie", year: 1999 },
+      { title: "The Matrix Reloaded", type: "movie", year: 2003 },
+      { title: "The Matrix Revolutions", type: "movie", year: 2003 },
+      { title: "Inception", type: "movie", year: 2010 },
+      { title: "Interstellar", type: "movie", year: 2014 },
+      { title: "Tenet", type: "movie", year: 2020 },
+      { title: "Arrival", type: "movie", year: 2016 },
+      { title: "Ex Machina", type: "movie", year: 2014 },
+      { title: "Annihilation", type: "movie", year: 2018 },
+      { title: "Looper", type: "movie", year: 2012 },
+      { title: "L.A. Confidential", type: "movie", year: 1997 },
+      { title: "Chinatown", type: "movie", year: 1974 },
+      { title: "The Maltese Falcon", type: "movie", year: 1941 },
+      { title: "The Big Sleep", type: "movie", year: 1946 },
+      { title: "Double Indemnity", type: "movie", year: 1944 },
+      { title: "The Third Man", type: "movie", year: 1949 },
+      { title: "Touch of Evil", type: "movie", year: 1958 },
+      { title: "The Postman Always Rings Twice", type: "movie", year: 1946 },
+      { title: "Out of the Past", type: "movie", year: 1947 },
+      { title: "Gun Crazy", type: "movie", year: 1950 },
+      { title: "Pulp Fiction", type: "movie", year: 1994 },
+      { title: "Reservoir Dogs", type: "movie", year: 1992 },
+      { title: "Jackie Brown", type: "movie", year: 1997 },
+      { title: "Kill Bill Vol 1", type: "movie", year: 2003 },
+      { title: "Kill Bill Vol 2", type: "movie", year: 2004 },
+      { title: "Inglourious Basterds", type: "movie", year: 2009 },
+      { title: "Django Unchained", type: "movie", year: 2012 },
+      { title: "Once Upon a Time in Hollywood", type: "movie", year: 2019 },
+      { title: "No Country for Old Men", type: "movie", year: 2007 },
+      { title: "There Will Be Blood", type: "movie", year: 2007 },
+      { title: "Ocean's Eleven", type: "movie", year: 2001 },
+      { title: "Ocean's Twelve", type: "movie", year: 2004 },
+      { title: "Ocean's Thirteen", type: "movie", year: 2007 },
+      { title: "The Italian Job", type: "movie", year: 2003 },
+      { title: "Heat", type: "movie", year: 1995 },
+      { title: "The Score", type: "movie", year: 2001 },
+      { title: "Inside Man", type: "movie", year: 2006 },
+      { title: "The Bank Job", type: "movie", year: 2008 },
+      { title: "Baby Driver", type: "movie", year: 2017 },
+      { title: "Now You See Me", type: "movie", year: 2013 },
+      { title: "Die Hard", type: "movie", year: 1988 },
+      { title: "Speed", type: "movie", year: 1994 },
+      { title: "The Rock", type: "movie", year: 1996 },
+      { title: "Con Air", type: "movie", year: 1997 },
+      { title: "Face/Off", type: "movie", year: 1997 },
+      { title: "Mission Impossible", type: "movie", year: 1996 },
+      { title: "Casino Royale", type: "movie", year: 2006 },
+      { title: "Skyfall", type: "movie", year: 2012 },
+      { title: "Glass Onion", type: "movie", year: 2022 }, // multiple planted clues
+      { title: "The Batman", type: "movie", year: 2022 }, // Riddler's ciphers
+      { title: "Everything Everywhere All at Once", type: "movie", year: 2022 }, // googly eyes
+      { title: "Barbarian", type: "movie", year: 2022 }, // measuring tape
+      { title: "The Menu", type: "movie", year: 2022 }, // Jeremy's photo
+      { title: "Top Gun Maverick", type: "movie", year: 2022 }, // Rooster's photo
+      { title: "Scream", type: "movie", year: 2022 }, // Richie's inhaler
+      { title: "X", type: "movie", year: 2022 }, // car getting stuck
+      { title: "The Northman", type: "movie", year: 2022 }, // Valkyrie sword
+      { title: "The Last Duel", type: "movie", year: 2021 }, // Hair ribbon
+      { title: "The Invisible Man", type: "movie", year: 2020 }, // Paint can trap
+      { title: "Evil Dead Rise", type: "movie", year: 2023 }, // Wood chipper
+      { title: "M3GAN", type: "movie", year: 2023 }, // Titanium blade
+      { title: "John Wick Chapter 4", type: "movie", year: 2023 }, // Dragon's Breath rounds
+      { title: "Cocaine Bear", type: "movie", year: 2023 }, // Ambulance
+      { title: "Scream VI", type: "movie", year: 2023 }, // Ghostface mask collection
+      { title: "Dune Part Two", type: "movie", year: 2024 }, // Paul's knife
+      { title: "Furiosa", type: "movie", year: 2024 }, // Mechanical arm
+      { title: "Bad Boys Ride or Die", type: "movie", year: 2024 }, // Captain Howard's betrayal
+      { title: "Deadpool & Wolverine", type: "movie", year: 2024 }, // Time ripper
+      { title: "Alien Romulus", type: "movie", year: 2024 }, // Facehugger temperature
+      { title: "Beetlejuice Beetlejuice", type: "movie", year: 2024 }, // Handbook for the Recently Deceased
+      { title: "Terrifier 3", type: "movie", year: 2024 }, // Art's resurrection
+      { title: "The Substance", type: "movie", year: 2024 }, // Injection site
+      { title: "Nosferatu", type: "movie", year: 2024 }, // Ellen's connection
+
+      // TV SHOWS (100 examples)
+      { title: "Breaking Bad", type: "tv", year: 2008 },
+      { title: "Lost", type: "tv", year: 2004 },
+      { title: "Westworld", type: "tv", year: 2016 },
       { title: "Fargo", type: "tv", year: 2014 },
       { title: "Better Call Saul", type: "tv", year: 2015 },
-      { title: "Zodiac", type: "movie", year: 2007 },
-      { title: "Gone Girl", type: "movie", year: 2014 }
+      { title: "True Detective", type: "tv", year: 2014 },
+      { title: "Mindhunter", type: "tv", year: 2017 },
+      { title: "Sherlock", type: "tv", year: 2010 },
+      { title: "Elementary", type: "tv", year: 2012 },
+      { title: "The Mentalist", type: "tv", year: 2008 },
+      { title: "Psych", type: "tv", year: 2006 },
+      { title: "Monk", type: "tv", year: 2002 },
+      { title: "Columbo", type: "tv", year: 1971 },
+      { title: "Murder She Wrote", type: "tv", year: 1984 },
+      { title: "Agatha Christie's Poirot", type: "tv", year: 1989 },
+      { title: "Dark", type: "tv", year: 2017 },
+      { title: "Stranger Things", type: "tv", year: 2016 },
+      { title: "The OA", type: "tv", year: 2016 },
+      { title: "Black Mirror", type: "tv", year: 2011 },
+      { title: "Mr. Robot", type: "tv", year: 2015 },
+      { title: "Yellowjackets", type: "tv", year: 2021 },
+      { title: "Twin Peaks", type: "tv", year: 1990 },
+      { title: "The Leftovers", type: "tv", year: 2014 },
+      { title: "Watchmen", type: "tv", year: 2019 },
+      { title: "The Night Of", type: "tv", year: 2016 },
+      { title: "CSI", type: "tv", year: 2000 },
+      { title: "CSI Miami", type: "tv", year: 2002 },
+      { title: "CSI NY", type: "tv", year: 2004 },
+      { title: "NCIS", type: "tv", year: 2003 },
+      { title: "Criminal Minds", type: "tv", year: 2005 },
+      { title: "Law & Order", type: "tv", year: 1990 },
+      { title: "Law & Order SVU", type: "tv", year: 1999 },
+      { title: "The X-Files", type: "tv", year: 1993 },
+      { title: "Bones", type: "tv", year: 2005 },
+      { title: "Castle", type: "tv", year: 2009 },
+      { title: "Game of Thrones", type: "tv", year: 2011 },
+      { title: "House of Cards", type: "tv", year: 2013 },
+      { title: "The Sopranos", type: "tv", year: 1999 },
+      { title: "Mad Men", type: "tv", year: 2007 },
+      { title: "The Wire", type: "tv", year: 2002 },
+      { title: "Dexter", type: "tv", year: 2006 },
+      { title: "Six Feet Under", type: "tv", year: 2001 },
+      { title: "Boardwalk Empire", type: "tv", year: 2010 },
+      { title: "Homeland", type: "tv", year: 2011 },
+      { title: "24", type: "tv", year: 2001 },
+      { title: "Battlestar Galactica", type: "tv", year: 2004 },
+      { title: "Fringe", type: "tv", year: 2008 },
+      { title: "The Twilight Zone", type: "tv", year: 1959 },
+      { title: "Doctor Who", type: "tv", year: 1963 },
+      { title: "Star Trek", type: "tv", year: 1966 },
+      { title: "Star Trek TNG", type: "tv", year: 1987 },
+      { title: "Star Trek DS9", type: "tv", year: 1993 },
+      { title: "Babylon 5", type: "tv", year: 1994 },
+      { title: "The Expanse", type: "tv", year: 2015 },
+      { title: "Altered Carbon", type: "tv", year: 2018 },
+      { title: "American Horror Story", type: "tv", year: 2011 },
+      { title: "The Walking Dead", type: "tv", year: 2010 },
+      { title: "Fear the Walking Dead", type: "tv", year: 2015 },
+      { title: "Supernatural", type: "tv", year: 2005 },
+      { title: "Buffy the Vampire Slayer", type: "tv", year: 1997 },
+      { title: "Angel", type: "tv", year: 1999 },
+      { title: "The Vampire Diaries", type: "tv", year: 2009 },
+      { title: "Teen Wolf", type: "tv", year: 2011 },
+      { title: "Grimm", type: "tv", year: 2011 },
+      { title: "Evil", type: "tv", year: 2019 },
+      { title: "The Outer Limits", type: "tv", year: 1963 },
+      { title: "Tales from the Crypt", type: "tv", year: 1989 },
+      { title: "Amazing Stories", type: "tv", year: 1985 },
+      { title: "Are You Afraid of the Dark", type: "tv", year: 1991 },
+      { title: "Goosebumps", type: "tv", year: 1995 },
+      { title: "Broadchurch", type: "tv", year: 2013 },
+      { title: "The Fall", type: "tv", year: 2013 },
+      { title: "Line of Duty", type: "tv", year: 2012 },
+      { title: "Happy Valley", type: "tv", year: 2014 },
+      { title: "Luther", type: "tv", year: 2010 },
+      { title: "Endeavour", type: "tv", year: 2012 },
+      { title: "Midsomer Murders", type: "tv", year: 1997 },
+      { title: "Inspector Morse", type: "tv", year: 1987 },
+      { title: "The Killing", type: "tv", year: 2007 },
+      { title: "The Bridge", type: "tv", year: 2011 },
+      { title: "Wallander", type: "tv", year: 2005 },
+      { title: "Beck", type: "tv", year: 1997 },
+      { title: "Succession", type: "tv", year: 2018 },
+      { title: "Ozark", type: "tv", year: 2017 },
+      { title: "Narcos", type: "tv", year: 2015 },
+      { title: "The Americans", type: "tv", year: 2013 },
+      { title: "Hannibal", type: "tv", year: 2013 },
+      { title: "Bates Motel", type: "tv", year: 2013 },
+      { title: "The Blacklist", type: "tv", year: 2013 },
+      { title: "Person of Interest", type: "tv", year: 2011 },
+      { title: "The Crown", type: "tv", year: 2016 },
+      { title: "House of the Dragon", type: "tv", year: 2022 },
+      { title: "The Boys", type: "tv", year: 2019 },
+      { title: "The Mandalorian", type: "tv", year: 2019 },
+      { title: "WandaVision", type: "tv", year: 2021 },
+      { title: "Loki", type: "tv", year: 2021 },
+      { title: "The Queen's Gambit", type: "tv", year: 2020 },
+      { title: "Mare of Easttown", type: "tv", year: 2021 },
+      { title: "The White Lotus", type: "tv", year: 2021 },
+      { title: "The Last of Us", type: "tv", year: 2023 }, // Ellie's immunity
+      { title: "Wednesday", type: "tv", year: 2022 }, // Tyler's Hyde transformation
+      { title: "Stranger Things 4", type: "tv", year: 2022 }, // Vecna's clock
+      { title: "House of the Dragon", type: "tv", year: 2022 }, // Dragon eggs
+      { title: "The Bear", type: "tv", year: 2022 }, // Sydney's notebook
+      { title: "Euphoria", type: "tv", year: 2022 }, // Nate's DVD collection
+      { title: "Ozark", type: "tv", year: 2022 }, // Darlene's poppy fields
+      { title: "Yellowjackets", type: "tv", year: 2021 }, // Lottie's visions
+      { title: "Mare of Easttown", type: "tv", year: 2021 }, // Dylan's photo
+      { title: "WandaVision", type: "tv", year: 2021 }, // Nexus commercial
+      { title: "Loki", type: "tv", year: 2021 }, // Time Variance Authority
+      { title: "The Queen's Gambit", type: "tv", year: 2020 }, // Green pills
+      { title: "The Mandalorian", type: "tv", year: 2020 }, // Darksaber
+      { title: "Bridgerton", type: "tv", year: 2020 }, // Anthony's bee sting
+      { title: "Lovecraft Country", type: "tv", year: 2020 }, // Book of Names
+      { title: "The Boys", type: "tv", year: 2020 }, // Compound V
+      { title: "Ted Lasso", type: "tv", year: 2020 }, // Believe sign
+      { title: "The Umbrella Academy", type: "tv", year: 2020 }, // Kugelblitz
+      { title: "Russian Doll", type: "tv", year: 2022 }, // Family timeline
+      { title: "Only Murders in the Building", type: "tv", year: 2021 }, // Podcast equipment
+      { title: "Squid Game", type: "tv", year: 2021 }, // Glass stepping stones
+      { title: "The White Lotus", type: "tv", year: 2021 }, // Shane's entitlement
+      { title: "Succession", type: "tv", year: 2023 }, // Tom's betrayal setup
+      { title: "Shogun", type: "tv", year: 2024 }, // Blackthorne's pistol
+      { title: "The Bear Season 3", type: "tv", year: 2024 }, // Carmy's relationship issues
+
+      // GAMES (100 examples)
+      { title: "Phoenix Wright Ace Attorney", type: "game", year: 2001 },
+      { title: "Phoenix Wright Justice for All", type: "game", year: 2002 },
+      { title: "Phoenix Wright Trials and Tribulations", type: "game", year: 2004 },
+      { title: "Apollo Justice Ace Attorney", type: "game", year: 2007 },
+      { title: "Ace Attorney Dual Destinies", type: "game", year: 2013 },
+      { title: "Ace Attorney Spirit of Justice", type: "game", year: 2016 },
+      { title: "The Great Ace Attorney", type: "game", year: 2015 },
+      { title: "Professor Layton and the Curious Village", type: "game", year: 2007 },
+      { title: "Professor Layton and the Diabolical Box", type: "game", year: 2007 },
+      { title: "Professor Layton and the Unwound Future", type: "game", year: 2008 },
+      { title: "Silent Hill", type: "game", year: 1999 },
+      { title: "Silent Hill 2", type: "game", year: 2001 },
+      { title: "Silent Hill 3", type: "game", year: 2003 },
+      { title: "Silent Hill 4", type: "game", year: 2004 },
+      { title: "Resident Evil", type: "game", year: 1996 },
+      { title: "Resident Evil 2", type: "game", year: 1998 },
+      { title: "Resident Evil 3", type: "game", year: 1999 },
+      { title: "Resident Evil 4", type: "game", year: 2005 },
+      { title: "Resident Evil 7", type: "game", year: 2017 },
+      { title: "Resident Evil Village", type: "game", year: 2021 },
+      { title: "Final Fantasy VII", type: "game", year: 1997 },
+      { title: "Final Fantasy VIII", type: "game", year: 1999 },
+      { title: "Final Fantasy IX", type: "game", year: 2000 },
+      { title: "Final Fantasy X", type: "game", year: 2001 },
+      { title: "Final Fantasy VI", type: "game", year: 1994 },
+      { title: "Chrono Trigger", type: "game", year: 1995 },
+      { title: "Chrono Cross", type: "game", year: 1999 },
+      { title: "Secret of Mana", type: "game", year: 1993 },
+      { title: "Tales of Symphonia", type: "game", year: 2003 },
+      { title: "Xenogears", type: "game", year: 1998 },
+      { title: "The Last of Us", type: "game", year: 2013 },
+      { title: "The Last of Us Part II", type: "game", year: 2020 },
+      { title: "BioShock", type: "game", year: 2007 },
+      { title: "BioShock Infinite", type: "game", year: 2013 },
+      { title: "Portal", type: "game", year: 2007 },
+      { title: "Portal 2", type: "game", year: 2011 },
+      { title: "Half-Life", type: "game", year: 1998 },
+      { title: "Half-Life 2", type: "game", year: 2004 },
+      { title: "Half-Life Alyx", type: "game", year: 2020 },
+      { title: "Mass Effect", type: "game", year: 2007 },
+      { title: "Monkey Island", type: "game", year: 1990 },
+      { title: "Monkey Island 2", type: "game", year: 1991 },
+      { title: "Day of the Tentacle", type: "game", year: 1993 },
+      { title: "Sam & Max Hit the Road", type: "game", year: 1993 },
+      { title: "The Longest Journey", type: "game", year: 1999 },
+      { title: "Grim Fandango", type: "game", year: 1998 },
+      { title: "Broken Sword", type: "game", year: 1996 },
+      { title: "Gabriel Knight", type: "game", year: 1993 },
+      { title: "King's Quest VI", type: "game", year: 1992 },
+      { title: "Quest for Glory", type: "game", year: 1989 },
+      { title: "Danganronpa", type: "game", year: 2010 },
+      { title: "Danganronpa 2", type: "game", year: 2012 },
+      { title: "Danganronpa V3", type: "game", year: 2017 },
+      { title: "Zero Escape 999", type: "game", year: 2009 },
+      { title: "Zero Escape Virtue's Last Reward", type: "game", year: 2012 },
+      { title: "Zero Escape Zero Time Dilemma", type: "game", year: 2016 },
+      { title: "Steins;Gate", type: "game", year: 2009 },
+      { title: "Chaos;Head", type: "game", year: 2008 },
+      { title: "AI The Somnium Files", type: "game", year: 2019 },
+      { title: "Disco Elysium", type: "game", year: 2019 },
+      { title: "Red Dead Redemption", type: "game", year: 2010 },
+      { title: "Red Dead Redemption 2", type: "game", year: 2018 },
+      { title: "Grand Theft Auto Vice City", type: "game", year: 2002 },
+      { title: "Grand Theft Auto San Andreas", type: "game", year: 2004 },
+      { title: "Grand Theft Auto IV", type: "game", year: 2008 },
+      { title: "Grand Theft Auto V", type: "game", year: 2013 },
+      { title: "The Witcher 3", type: "game", year: 2015 },
+      { title: "Cyberpunk 2077", type: "game", year: 2020 },
+      { title: "Deus Ex", type: "game", year: 2000 },
+      { title: "Deus Ex Human Revolution", type: "game", year: 2011 },
+      { title: "Metal Gear Solid", type: "game", year: 1998 },
+      { title: "Metal Gear Solid 2", type: "game", year: 2001 },
+      { title: "Metal Gear Solid 3", type: "game", year: 2004 },
+      { title: "Metal Gear Solid 4", type: "game", year: 2008 },
+      { title: "Metal Gear Solid V", type: "game", year: 2015 },
+      { title: "Undertale", type: "game", year: 2015 },
+      { title: "Deltarune", type: "game", year: 2018 },
+      { title: "What Remains of Edith Finch", type: "game", year: 2017 },
+      { title: "Gone Home", type: "game", year: 2013 },
+      { title: "Firewatch", type: "game", year: 2016 },
+      { title: "The Stanley Parable", type: "game", year: 2013 },
+      { title: "The Beginner's Guide", type: "game", year: 2015 },
+      { title: "Her Story", type: "game", year: 2015 },
+      { title: "Return of the Obra Dinn", type: "game", year: 2018 },
+      { title: "Papers Please", type: "game", year: 2013 },
+      { title: "Myst", type: "game", year: 1993 },
+      { title: "Riven", type: "game", year: 1997 },
+      { title: "The 7th Guest", type: "game", year: 1993 },
+      { title: "The 11th Hour", type: "game", year: 1995 },
+      { title: "Phantasmagoria", type: "game", year: 1995 },
+      { title: "Life is Strange", type: "game", year: 2015 },
+      { title: "Life is Strange 2", type: "game", year: 2018 },
+      { title: "Life is Strange True Colors", type: "game", year: 2021 },
+      { title: "The Walking Dead", type: "game", year: 2012 },
+      { title: "The Wolf Among Us", type: "game", year: 2013 },
+      { title: "Batman The Telltale Series", type: "game", year: 2016 },
+      { title: "Tales from the Borderlands", type: "game", year: 2014 },
+      { title: "The Walking Dead Season 2", type: "game", year: 2013 },
+      { title: "The Walking Dead A New Frontier", type: "game", year: 2016 },
+      { title: "The Walking Dead The Final Season", type: "game", year: 2018 },
+      { title: "Game of Thrones Telltale", type: "game", year: 2014 },
+      { title: "Civilization VI", type: "game", year: 2016 },
+      { title: "XCOM Enemy Unknown", type: "game", year: 2012 },
+      { title: "XCOM 2", type: "game", year: 2016 },
+      { title: "The Last of Us Part II", type: "game", year: 2020 }, // Ellie's switchblade
+      { title: "Ghost of Tsushima", type: "game", year: 2020 }, // Wind guidance
+      { title: "Hades", type: "game", year: 2020 }, // Zagreus' blood
+      { title: "Among Us", type: "game", year: 2020 }, // Emergency button
+      { title: "Fall Guys", type: "game", year: 2020 }, // Crown mechanics
+      { title: "Animal Crossing New Horizons", type: "game", year: 2020 }, // Tom Nook's debt
+      { title: "Doom Eternal", type: "game", year: 2020 }, // Crucible blade
+      { title: "Half-Life Alyx", type: "game", year: 2020 }, // Gravity gloves
+      { title: "Cyberpunk 2077", type: "game", year: 2020 }, // Johnny's chip
+      { title: "It Takes Two", type: "game", year: 2021 }, // Dr. Hakim's book
+      { title: "Resident Evil Village", type: "game", year: 2021 }, // Rose's powers
+      { title: "Metroid Dread", type: "game", year: 2021 }, // X parasites
+      { title: "Ratchet & Clank Rift Apart", type: "game", year: 2021 }, // Dimensionator
+      { title: "Deathloop", type: "game", year: 2021 }, // AETHER experiment
+      { title: "Psychonauts 2", type: "game", year: 2021 }, // Maligula memories
+      { title: "Inscryption", type: "game", year: 2021 }, // OLD_DATA
+      { title: "Unpacking", type: "game", year: 2021 }, // Relationship photos
+      { title: "Elden Ring", type: "game", year: 2022 }, // Melina's purpose
+      { title: "God of War Ragnarök", type: "game", year: 2022 }, // Atreus' identity
+      { title: "Horizon Forbidden West", type: "game", year: 2022 }, // GAIA backup
+      { title: "Sifu", type: "game", year: 2022 }, // Aging mechanic
+      { title: "Stray", type: "game", year: 2022 }, // B-12's memories
+      { title: "The Stanley Parable Ultra Deluxe", type: "game", year: 2022 }, // Skip button
+      { title: "Pizza Tower", type: "game", year: 2023 }, // Peppino's anxiety
+      { title: "Baldur's Gate 3", type: "game", year: 2023 }, // Tadpole transformation
+
+      // BOOKS (100 examples)
+      { title: "And Then There Were None", type: "book", year: 1939 },
+      { title: "Murder on the Orient Express", type: "book", year: 1934 },
+      { title: "The Murder of Roger Ackroyd", type: "book", year: 1926 },
+      { title: "Death on the Nile", type: "book", year: 1937 },
+      { title: "The ABC Murders", type: "book", year: 1936 },
+      { title: "The Big Sleep", type: "book", year: 1939 },
+      { title: "The Maltese Falcon", type: "book", year: 1930 },
+      { title: "The Thin Man", type: "book", year: 1934 },
+      { title: "The Adventures of Sherlock Holmes", type: "book", year: 1892 },
+      { title: "The Hound of the Baskervilles", type: "book", year: 1902 },
+      { title: "Gone Girl", type: "book", year: 2012 },
+      { title: "The Girl with the Dragon Tattoo", type: "book", year: 2005 },
+      { title: "The Silence of the Lambs", type: "book", year: 1988 },
+      { title: "Red Dragon", type: "book", year: 1981 },
+      { title: "In the Woods", type: "book", year: 2007 },
+      { title: "The Likeness", type: "book", year: 2008 },
+      { title: "Big Little Lies", type: "book", year: 2014 },
+      { title: "Sharp Objects", type: "book", year: 2006 },
+      { title: "Dark Places", type: "book", year: 2009 },
+      { title: "The Turn of the Key", type: "book", year: 2019 },
+      { title: "Rebecca", type: "book", year: 1938 },
+      { title: "Jane Eyre", type: "book", year: 1847 },
+      { title: "Wuthering Heights", type: "book", year: 1847 },
+      { title: "The Great Gatsby", type: "book", year: 1925 },
+      { title: "To Kill a Mockingbird", type: "book", year: 1960 },
+      { title: "The Catcher in the Rye", type: "book", year: 1951 },
+      { title: "One Flew Over the Cuckoo's Nest", type: "book", year: 1962 },
+      { title: "Lord of the Flies", type: "book", year: 1954 },
+      { title: "The Secret Garden", type: "book", year: 1911 },
+      { title: "The Turn of the Screw", type: "book", year: 1898 },
+      { title: "The Shining", type: "book", year: 1977 },
+      { title: "Pet Sematary", type: "book", year: 1983 },
+      { title: "It", type: "book", year: 1986 },
+      { title: "Carrie", type: "book", year: 1974 },
+      { title: "Salem's Lot", type: "book", year: 1975 },
+      { title: "The Stand", type: "book", year: 1978 },
+      { title: "Misery", type: "book", year: 1987 },
+      { title: "The Dead Zone", type: "book", year: 1979 },
+      { title: "Firestarter", type: "book", year: 1980 },
+      { title: "Christine", type: "book", year: 1983 },
+      { title: "Dune", type: "book", year: 1965 },
+      { title: "Foundation", type: "book", year: 1951 },
+      { title: "I Robot", type: "book", year: 1950 },
+      { title: "Ender's Game", type: "book", year: 1985 },
+      { title: "The Martian", type: "book", year: 2011 },
+      { title: "Hyperion", type: "book", year: 1989 },
+      { title: "Neuromancer", type: "book", year: 1984 },
+      { title: "The Time Machine", type: "book", year: 1895 },
+      { title: "Frankenstein", type: "book", year: 1818 },
+      { title: "Dr. Jekyll and Mr. Hyde", type: "book", year: 1886 },
+      { title: "The Lord of the Rings", type: "book", year: 1954 },
+      { title: "The Hobbit", type: "book", year: 1937 },
+      { title: "A Song of Ice and Fire", type: "book", year: 1996 },
+      { title: "Harry Potter and the Philosopher's Stone", type: "book", year: 1997 },
+      { title: "Harry Potter and the Chamber of Secrets", type: "book", year: 1998 },
+      { title: "Harry Potter and the Prisoner of Azkaban", type: "book", year: 1999 },
+      { title: "Harry Potter and the Goblet of Fire", type: "book", year: 2000 },
+      { title: "Harry Potter and the Order of the Phoenix", type: "book", year: 2003 },
+      { title: "Harry Potter and the Half-Blood Prince", type: "book", year: 2005 },
+      { title: "Harry Potter and the Deathly Hallows", type: "book", year: 2007 },
+      { title: "The Name of the Rose", type: "book", year: 1980 },
+      { title: "The Da Vinci Code", type: "book", year: 2003 },
+      { title: "Angels and Demons", type: "book", year: 2000 },
+      { title: "Digital Fortress", type: "book", year: 1998 },
+      { title: "The Lost Symbol", type: "book", year: 2009 },
+      { title: "Inferno", type: "book", year: 2013 },
+      { title: "Origin", type: "book", year: 2017 },
+      { title: "The Firm", type: "book", year: 1991 },
+      { title: "The Pelican Brief", type: "book", year: 1992 },
+      { title: "The Client", type: "book", year: 1993 },
+      { title: "The Chamber", type: "book", year: 1994 },
+      { title: "The Rainmaker", type: "book", year: 1995 },
+      { title: "The Runaway Jury", type: "book", year: 1996 },
+      { title: "The Partner", type: "book", year: 1997 },
+      { title: "The Street Lawyer", type: "book", year: 1998 },
+      { title: "The Testament", type: "book", year: 1999 },
+      { title: "The Brethren", type: "book", year: 2000 },
+      { title: "A Painted House", type: "book", year: 2001 },
+      { title: "The Summons", type: "book", year: 2002 },
+      { title: "The King of Torts", type: "book", year: 2003 },
+      { title: "Bleachers", type: "book", year: 2004 },
+      { title: "The Broker", type: "book", year: 2005 },
+      { title: "The Judge", type: "book", year: 2014 },
+      { title: "Rogue Lawyer", type: "book", year: 2015 },
+      { title: "The Whistler", type: "book", year: 2016 },
+      { title: "Camino Island", type: "book", year: 2017 },
+      { title: "The Rooster Bar", type: "book", year: 2017 },
+      { title: "The Reckoning", type: "book", year: 2018 },
+      { title: "The Guardians", type: "book", year: 2019 },
+      { title: "A Time for Mercy", type: "book", year: 2020 },
+      { title: "Sooley", type: "book", year: 2021 },
+      { title: "The Judge's List", type: "book", year: 2021 },
+      { title: "The Boys from Biloxi", type: "book", year: 2022 },
+      { title: "The Exchange", type: "book", year: 2023 },
+      { title: "Camino Winds", type: "book", year: 2020 },
+      { title: "Camino Ghosts", type: "book", year: 2024 },
+      { title: "The Racketeer", type: "book", year: 2012 },
+      { title: "The Litigators", type: "book", year: 2011 },
+      { title: "The Confession", type: "book", year: 2010 },
+      { title: "The Associate", type: "book", year: 2009 },
+      { title: "The Midnight Library", type: "book", year: 2020 }, // Book of Regrets
+      { title: "The Invisible Life of Addie LaRue", type: "book", year: 2020 }, // Wooden ring
+      { title: "Mexican Gothic", type: "book", year: 2020 }, // Mushroom spores
+      { title: "Klara and the Sun", type: "book", year: 2021 }, // AF's observations
+      { title: "Project Hail Mary", type: "book", year: 2021 }, // Astrophage
+      { title: "The Seven Husbands of Evelyn Hugo", type: "book", year: 2021 }, // Celia's letters
+      { title: "Malibu Rising", type: "book", year: 2021 }, // Nina's decision
+      { title: "The Thursday Murder Club", type: "book", year: 2020 }, // Joyce's files
+      { title: "The Sanatorium", type: "book", year: 2021 }, // Elin's trauma
+      { title: "The Guest List", type: "book", year: 2020 }, // Wedding favors
+      { title: "The Plot", type: "book", year: 2021 }, // Stolen story
+      { title: "The Four Winds", type: "book", year: 2021 }, // Elsa's strength
+      { title: "Hamnet", type: "book", year: 2020 }, // Plague symptoms
+      { title: "The Push", type: "book", year: 2021 }, // Violet's behavior
+      { title: "Rock Paper Scissors", type: "book", year: 2021 }, // Chapel diary
+      { title: "The Maidens", type: "book", year: 2021 }, // Greek tragedy
+      { title: "The Silent Patient", type: "book", year: 2020 }, // Alicia's diary
+      { title: "Where the Crawdads Sing", type: "book", year: 2020 }, // Shell necklace
+      { title: "Circe", type: "book", year: 2020 }, // Telegonus' birth
+      { title: "The Atlas Six", type: "book", year: 2022 }, // Society's purpose
+      { title: "Book Lovers", type: "book", year: 2022 }, // Nora's emails
+      { title: "Verity", type: "book", year: 2021 }, // Manuscript truth
+      { title: "Fourth Wing", type: "book", year: 2023 }, // Dragon bonding
+      { title: "Tomorrow and Tomorrow and Tomorrow", type: "book", year: 2022 }, // Game design
+      { title: "Iron Flame", type: "book", year: 2023 }, // Venin transformation
+
     ],
     tags: ["foreshadowing", "plot-device", "mystery", "storytelling"]
-  },
-
-  "unreliable-narrator": {
-    id: "unreliable-narrator",
-    name: "Unreliable Narrator",
-    definition: "A storyteller whose credibility is compromised, misleading the audience about events, either intentionally or due to their limited understanding.",
-    difficulty: "hard",
-    hints: [
-      "The person telling the story can't be fully trusted",
-      "May be lying, delusional, or have limited information",
-      "Creates plot twists when truth is revealed"
-    ],
-    examples: [
-      { title: "Fight Club", type: "movie", year: 1999 },
-      { title: "The Sixth Sense", type: "movie", year: 1999 },
-      { title: "Shutter Island", type: "movie", year: 2010 },
-      { title: "Memento", type: "movie", year: 2000 },
-      { title: "The Usual Suspects", type: "movie", year: 1995 },
-      { title: "Gone Girl", type: "movie", year: 2014 },
-      { title: "American Psycho", type: "movie", year: 2000 },
-      { title: "Rashomon", type: "movie", year: 1950 },
-      { title: "The Great Gatsby", type: "book", year: 1925 },
-      { title: "Lolita", type: "book", year: 1955 },
-      { title: "The Catcher in the Rye", type: "book", year: 1951 },
-      { title: "Life of Pi", type: "book", year: 2001 },
-      { title: "Mr. Robot", type: "tv", year: 2015 },
-      { title: "Westworld", type: "tv", year: 2016 },
-      { title: "The Handmaid's Tale", type: "tv", year: 2017 }
-    ],
-    tags: ["narration", "twist", "deception", "perspective"]
-  },
-
-  "breaking-the-fourth-wall": {
-    id: "breaking-the-fourth-wall",
-    name: "Breaking the Fourth Wall",
-    definition: "When a character acknowledges they are in a fictional work and directly addresses the audience or references the medium itself.",
-    difficulty: "hard",
-    hints: [
-      "Character talks directly to the audience",
-      "Acknowledges they're in a movie, TV show, or game",
-      "Often used for comedy or meta-commentary"
-    ],
-    examples: [
-      { title: "Deadpool", type: "movie", year: 2016 },
-      { title: "The Office", type: "tv", year: 2005 },
-      { title: "Ferris Bueller's Day Off", type: "movie", year: 1986 },
-      { title: "House of Cards", type: "tv", year: 2013 },
-      { title: "Fleabag", type: "tv", year: 2016 },
-      { title: "Wayne's World", type: "movie", year: 1992 },
-      { title: "Spaceballs", type: "movie", year: 1987 },
-      { title: "The Stanley Parable", type: "game", year: 2013 },
-      { title: "Doki Doki Literature Club", type: "game", year: 2017 },
-      { title: "She-Hulk", type: "tv", year: 2022 },
-      { title: "Saved by the Bell", type: "tv", year: 1989 },
-      { title: "Malcolm in the Middle", type: "tv", year: 2000 },
-      { title: "Blazing Saddles", type: "movie", year: 1974 },
-      { title: "The Purple Rose of Cairo", type: "movie", year: 1985 },
-      { title: "Funny Games", type: "movie", year: 1997 }
-    ],
-    tags: ["meta", "comedy", "self-aware", "audience"]
   },
 
   "deus-ex-machina": {
