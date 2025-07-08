@@ -134,18 +134,18 @@ function populateTropeSelector() {
     // Clear existing options
     selector.innerHTML = '<option value="">Select trope...</option>';
     
-    // Wait for TROPES_DATABASE to be available
-    if (!window.TROPES_DATABASE) {
+    // Check for TROPES_DATABASE directly
+    if (typeof TROPES_DATABASE === 'undefined') {
         console.log('TROPES_DATABASE not ready, waiting...');
-        setTimeout(populateTropeSelector, 500); // Try again in 500ms
+        setTimeout(populateTropeSelector, 500);
         return;
     }
     
-    console.log('TROPES_DATABASE found:', window.TROPES_DATABASE);
+    console.log('TROPES_DATABASE found:', TROPES_DATABASE);
     
     // Add tropes from database
-    Object.keys(window.TROPES_DATABASE).forEach((tropeId, index) => {
-        const trope = window.TROPES_DATABASE[tropeId];
+    Object.keys(TROPES_DATABASE).forEach((tropeId, index) => {
+        const trope = TROPES_DATABASE[tropeId];
         console.log(`Adding trope ${index}:`, trope.name);
         const option = document.createElement('option');
         option.value = index;
@@ -225,7 +225,7 @@ function skipToComplete() {
         return;
     }
     
-    const currentTrope = window.getTodaysTrope ? window.getTodaysTrope() : null;
+    const currentTrope = getTodaysTrope ? getTodaysTrope() : null;
     if (currentTrope && currentTrope.examples) {
         // Fill with first 5 examples
         const examples = currentTrope.examples.slice(0, 5);
@@ -242,7 +242,7 @@ function skipToComplete() {
 }
 
 function addRandomAnswer() {
-    const currentTrope = window.getTodaysTrope ? window.getTodaysTrope() : null;
+    const currentTrope = getTodaysTrope ? getTodaysTrope() : null;
     if (!currentTrope || !currentTrope.examples || !window.tropeoutGame) {
         alert('Cannot add answer - missing data!');
         return;
@@ -302,7 +302,7 @@ function showGameState() {
         return;
     }
     
-    const currentTrope = window.getTodaysTrope ? window.getTodaysTrope() : null;
+    const currentTrope = getTodaysTrope ? getTodaysTrope() : null;
     const state = {
         correctAnswers: window.tropeoutGame.correctAnswers || [],
         submissions: window.tropeoutGame.submissions || [], // Real property name
