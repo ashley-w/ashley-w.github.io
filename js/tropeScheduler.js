@@ -1,4 +1,4 @@
-// TropeOut - Daily Trope Scheduler (Phase 1)
+// TropeOut - Daily Trope Scheduler (Phase 1) - FIXED
 
 class TropeScheduler {
   constructor() {
@@ -8,7 +8,7 @@ class TropeScheduler {
     // This ensures the same trope rotation for everyone, always
     this.tropeIds = [
       'chosen-one',        // Index 0 - Day 0 (July 7) - Launch day
-      'chekhov-gun',       // Index 1 - Day 1 (July 8) ← Today returns to Chekhov's Gun
+      'chekhov-gun',       // Index 1 - Day 1 (July 8)
       'fish-out-of-water', // Index 2 - Day 2 (July 9)
       'evil-laugh',        // Index 3 - Day 3 (July 10)
       'red-herring',       // Index 4 - Day 4 (July 11)
@@ -34,33 +34,27 @@ class TropeScheduler {
 
   /**
    * Get the current day number since game launch
+   * FIXED: Ensure proper day calculation that accounts for local midnight
    * @returns {number} Days since epoch
    */
   getCurrentDay() {
+    // Create dates at local midnight to ensure proper day boundary calculation
     const today = new Date();
-    const timeDiff = today.getTime() - this.epochDate.getTime();
-    return Math.floor(timeDiff / (1000 * 3600 * 24));
+    today.setHours(0, 0, 0, 0); // Set to start of today (local midnight)
+    
+    const epoch = new Date('2025-07-07');
+    epoch.setHours(0, 0, 0, 0); // Set epoch to start of July 7 (local midnight)
+    
+    const timeDiff = today.getTime() - epoch.getTime();
+    const dayNumber = Math.floor(timeDiff / (1000 * 3600 * 24));
+    
+    console.log(`🐛 DEBUG: Today normalized: ${today.toDateString()}`);
+    console.log(`🐛 DEBUG: Epoch normalized: ${epoch.toDateString()}`);
+    console.log(`🐛 DEBUG: Time diff: ${timeDiff}ms`);
+    console.log(`🐛 DEBUG: Day number: ${dayNumber}`);
+    
+    return dayNumber;
   }
-
-/**
-   * Get today's trope ID based on deterministic rotation
-   /** @returns {string} Trope ID for today
-   
-  getTodaysTropeId() {
-    const dayNumber = this.getCurrentDay();
-    const tropeIndex = dayNumber % this.tropeIds.length;
-    return this.tropeIds[tropeIndex];
-  }
-
-  /**
-   * Get today's complete trope object
-   /** @returns {Object} Today's trope data
-  
-  getTodaysTrope() {
-    const tropeId = this.getTodaysTropeId();
-    return TROPES_DATABASE[tropeId];
-  }
-*/
 
   /**
    * Get today's trope ID based on deterministic rotation
@@ -69,6 +63,9 @@ class TropeScheduler {
   getTodaysTropeId() {
     const dayNumber = this.getCurrentDay();
     const tropeIndex = dayNumber % this.tropeIds.length;
+    
+    console.log(`🐛 DEBUG: Day ${dayNumber} -> Index ${tropeIndex} -> ${this.tropeIds[tropeIndex]}`);
+    
     return this.tropeIds[tropeIndex];
   }
 
@@ -93,14 +90,24 @@ class TropeScheduler {
 
   /**
    * Get trope for a specific date
+   * FIXED: Use consistent midnight normalization
    * @param {Date} date - Target date
    * @returns {Object} Trope data for that date
    */
   getTropeForDate(date) {
-    const timeDiff = date.getTime() - this.epochDate.getTime();
+    // Normalize the input date to midnight
+    const normalizedDate = new Date(date);
+    normalizedDate.setHours(0, 0, 0, 0);
+    
+    // Normalize epoch to midnight
+    const epoch = new Date('2025-07-07');
+    epoch.setHours(0, 0, 0, 0);
+    
+    const timeDiff = normalizedDate.getTime() - epoch.getTime();
     const dayNumber = Math.floor(timeDiff / (1000 * 3600 * 24));
     const tropeIndex = dayNumber % this.tropeIds.length;
     const tropeId = this.tropeIds[tropeIndex];
+    
     return TROPES_DATABASE[tropeId];
   }
 
