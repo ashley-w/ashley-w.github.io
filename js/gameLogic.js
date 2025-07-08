@@ -231,7 +231,7 @@ class TropeOutGame {
     ).join(' ');
   }
 
-  updateGuessHistory() {
+ updateGuessHistory() {
     const historyContainer = document.getElementById('guessHistory');
     if (!historyContainer) return;
     
@@ -244,8 +244,11 @@ class TropeOutGame {
     }
     
     // Show all guesses (excluding those that are correct)
+    // Use the same matching logic as the game validation
     const incorrectGuesses = this.submissions.filter(sub => 
-      !this.correctAnswers.some(correct => correct.toLowerCase() === sub)
+      !this.correctAnswers.some(correct => 
+        answerValidator.isMatch(sub, correct)
+      )
     );
     
     if (incorrectGuesses.length > 0) {
