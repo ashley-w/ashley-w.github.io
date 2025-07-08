@@ -2,7 +2,7 @@
 
 class TropeScheduler {
   constructor() {
-    this.epochDate = new Date('2025-01-01'); // Game launch date
+    this.epochDate = new Date('2025-07-07'); // Actual game launch date
     this.tropeIds = Object.keys(TROPES_DATABASE);
   }
 
