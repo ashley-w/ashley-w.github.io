@@ -181,22 +181,6 @@ class TropeOutGame {
     input.focus();
   }
 
-  updateSubmissionsDisplay() {
-    const correctGrid = document.getElementById('submissionsGrid');
-    const slots = correctGrid.querySelectorAll('.submission-slot');
-    
-    // Only show correct answers in the main slots
-    this.correctAnswers.forEach((answer, index) => {
-      if (slots[index]) {
-        slots[index].className = 'submission-slot correct';
-        slots[index].querySelector('.slot-content').textContent = answer;
-      }
-    });
-    
-    // Update the guess history separately
-    this.updateGuessHistory();
-  }
-
   updateGuessHistory() {
     const historyContainer = document.getElementById('guessHistory');
     if (!historyContainer) return;
@@ -233,6 +217,104 @@ class TropeOutGame {
     guessCount.className = 'guess-count';
     guessCount.textContent = `${this.submissions.length} total guess${this.submissions.length !== 1 ? 'es' : ''}`;
     historyContainer.appendChild(guessCount);
+  }
+
+  typeTextInSlot(slotIndex, text, callback) {
+    const slots = document.querySelectorAll('.submission-slot');
+    const slot = slots[slotIndex];
+    const content = slot.querySelector('.slot-content');
+    
+    if (!slot || !content) return;
+    
+    // Highlight the slot and add typing cursor
+    slot.classList.add('typing-in');
+    content.classList.add('typing');
+    content.textContent = '';
+    
+    let charIndex = 0;
+    const typingSpeed = 50; // milliseconds per character
+    
+    const typeChar = () => {
+      if (charIndex < text.length) {
+        content.textContent = text.substring(0, charIndex + 1);
+        charIndex++;
+
+        this.playTypingSound();
+
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        // Typing complete
+        content.classList.remove('typing');
+        content.classList.add('typing-complete');
+        slot.classList.remove('typing-in');
+        
+        // Call callback if provided
+        if (callback) callback();
+      }
+    };
+    
+    // Start typing after a brief delay
+    setTimeout(typeChar, 200);
+  }
+
+  playTypingSound() {
+    try {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+      gainNode.gain.setValueAtTime(0.01, audioContext.currentTime); // Very quiet
+      
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.05); // Very brief
+    } catch (error) {
+      // Silent fail if audio context not supported
+    }
+  }
+
+  updateSubmissionsDisplay() {
+    const correctGrid = document.getElementById('submissionsGrid');
+    const slots = correctGrid.querySelectorAll('.submission-slot');
+    
+    // Clear any existing typing effects
+    slots.forEach(slot => {
+      slot.classList.remove('typing-in');
+      const content = slot.querySelector('.slot-content');
+      content.classList.remove('typing', 'typing-complete');
+    });
+    
+    // Show existing correct answers instantly (no typing for old ones)
+    this.correctAnswers.slice(0, -1).forEach((answer, index) => {
+      if (slots[index]) {
+        slots[index].className = 'submission-slot correct';
+        slots[index].querySelector('.slot-content').textContent = answer;
+      }
+    });
+    
+    // Type the most recent correct answer (if any)
+    if (this.correctAnswers.length > 0) {
+      const latestIndex = this.correctAnswers.length - 1;
+      const latestAnswer = this.correctAnswers[latestIndex];
+      
+      if (slots[latestIndex]) {
+        slots[latestIndex].className = 'submission-slot correct';
+        
+        // Type the latest answer
+        this.typeTextInSlot(latestIndex, latestAnswer, () => {
+          // After typing completes, update guess history
+          this.updateGuessHistory();
+        });
+        
+        return; // Don't call updateGuessHistory immediately
+      }
+    }
+    
+    // If no new answers to type, just update guess history
+    this.updateGuessHistory();
   }
 
   updateProgress() {

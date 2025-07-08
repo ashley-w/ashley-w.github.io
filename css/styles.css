@@ -383,6 +383,40 @@ body {
   color: var(--neon-pink);
 }
 
+/* Typing Effect Styles */
+.slot-content.typing {
+  border-right: 2px solid var(--neon-cyan);
+  animation: blink-cursor 1s infinite;
+  min-width: 1ch; /* Ensures cursor is visible even with no text */
+}
+
+.slot-content.typing-complete {
+  border-right: none;
+  animation: none;
+}
+
+/* Blinking cursor animation */
+@keyframes blink-cursor {
+  0%, 50% { border-right-color: var(--neon-cyan); }
+  51%, 100% { border-right-color: transparent; }
+}
+
+/* Optional: Fade-in effect when typing starts */
+.submission-slot.typing-in {
+  animation: slot-highlight 0.3s ease;
+}
+
+@keyframes slot-highlight {
+  0% { 
+    background: rgba(0, 255, 255, 0.2);
+    transform: scale(1.02);
+  }
+  100% { 
+    background: var(--bg-tertiary);
+    transform: scale(1);
+  }
+}
+
 /* Guess History Styles */
 .guess-history-section {
   margin-top: 2rem;
