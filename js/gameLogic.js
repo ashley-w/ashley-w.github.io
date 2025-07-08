@@ -28,6 +28,8 @@ class TropeOutGame {
     this.hintsUsed = 0;
     
     this.init();
+
+     this.justAddedCorrectAnswer = false; // Add this new line
   }
 
   init() {
@@ -190,8 +192,10 @@ class TropeOutGame {
     
     if (isCorrect) {
       this.correctAnswers.push(formattedSubmission);
+      this.justAddedCorrectAnswer = true; // Add this line
       this.showMessage('Correct! ✅', 'success');
     } else {
+      this.justAddedCorrectAnswer = false; // Add this line
       this.showMessage('Not quite... ❌', 'error');
     }
 
@@ -323,45 +327,57 @@ class TropeOutGame {
   }
 
   updateSubmissionsDisplay() {
-    const correctGrid = document.getElementById('submissionsGrid');
-    const slots = correctGrid.querySelectorAll('.submission-slot');
-    
-    // Clear any existing typing effects
-    slots.forEach(slot => {
-      slot.classList.remove('typing-in');
-      const content = slot.querySelector('.slot-content');
-      content.classList.remove('typing', 'typing-complete');
-    });
-    
-    // Show existing correct answers instantly (no typing for old ones)
-    this.correctAnswers.slice(0, -1).forEach((answer, index) => {
-      if (slots[index]) {
-        slots[index].className = 'submission-slot correct';
-        slots[index].querySelector('.slot-content').textContent = answer;
-      }
-    });
-    
-    // Type the most recent correct answer (if any)
-    if (this.correctAnswers.length > 0) {
-      const latestIndex = this.correctAnswers.length - 1;
-      const latestAnswer = this.correctAnswers[latestIndex];
-      
-      if (slots[latestIndex]) {
-        slots[latestIndex].className = 'submission-slot correct';
-        
-        // Type the latest answer
-        this.typeTextInSlot(latestIndex, latestAnswer, () => {
-          // After typing completes, update guess history
-          this.updateGuessHistory();
-        });
-        
-        return; // Don't call updateGuessHistory immediately
-      }
+  const correctGrid = document.getElementById('submissionsGrid');
+  const slots = correctGrid.querySelectorAll('.submission-slot');
+  
+  // Clear any existing typing effects
+  slots.forEach(slot => {
+    slot.classList.remove('typing-in');
+    const content = slot.querySelector('.slot-content');
+    content.classList.remove('typing', 'typing-complete');
+  });
+  
+  // Show existing correct answers instantly (no typing for old ones)
+  this.correctAnswers.slice(0, -1).forEach((answer, index) => {
+    if (slots[index]) {
+      slots[index].className = 'submission-slot correct';
+      slots[index].querySelector('.slot-content').textContent = answer;
     }
+  });
+  
+  // Only type the most recent correct answer if we JUST added it
+  if (this.correctAnswers.length > 0 && this.justAddedCorrectAnswer) {
+    const latestIndex = this.correctAnswers.length - 1;
+    const latestAnswer = this.correctAnswers[latestIndex];
     
-    // If no new answers to type, just update guess history
-    this.updateGuessHistory();
+    if (slots[latestIndex]) {
+      slots[latestIndex].className = 'submission-slot correct';
+      
+      // Type the latest answer
+      this.typeTextInSlot(latestIndex, latestAnswer, () => {
+        // After typing completes, update guess history
+        this.updateGuessHistory();
+      });
+      
+      // Reset the flag after triggering animation
+      this.justAddedCorrectAnswer = false;
+      return; // Don't call updateGuessHistory immediately
+    }
+  } else if (this.correctAnswers.length > 0) {
+    // If we have correct answers but didn't just add one, show the latest one instantly
+    const latestIndex = this.correctAnswers.length - 1;
+    const latestAnswer = this.correctAnswers[latestIndex];
+    
+    if (slots[latestIndex]) {
+      slots[latestIndex].className = 'submission-slot correct';
+      slots[latestIndex].querySelector('.slot-content').textContent = latestAnswer;
+    }
   }
+  
+  // Always reset the flag and update guess history
+  this.justAddedCorrectAnswer = false;
+  this.updateGuessHistory();
+}
 
   updateProgress() {
     const correctCount = this.correctAnswers.length;
