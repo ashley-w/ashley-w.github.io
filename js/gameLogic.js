@@ -137,12 +137,6 @@ class TropeOutGame {
       }
     });
 
-    // Alpha testing link
-    const alphaLink = document.getElementById('alphaLink');
-    alphaLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      this.handleAlphaAccess();
-    });
   }
 
   showCompletedGameState() {
@@ -615,63 +609,7 @@ class TropeOutGame {
   // based on user input. It uses localStorage to remember the current trope index.
   // It also provides feedback messages for user actions.
 
-  handleAlphaAccess() {
-    const password = prompt('Alpha commands:\n• "trope2025" or "alpha" = reset game\n• "next" = next trope\n• "prev" = previous trope\n• "0-4" = specific trope number\n• "exit" = leave alpha mode\n\nEnter command:');
-    
-    if (password === null) return; // User cancelled
-    
-    // Handle trope cycling commands
-    if (password === 'next') {
-      const currentIndex = parseInt(localStorage.getItem('alpha_trope_index') || '0');
-      const nextIndex = (currentIndex + 1) % Object.keys(TROPES_DATABASE).length;
-      localStorage.setItem('alpha_trope_index', nextIndex);
-      this.showMessage(`🔄 Switched to trope ${nextIndex + 1}. Reloading...`, 'success');
-      setTimeout(() => window.location.reload(), 1000);
-      return;
-    }
-    
-    if (password === 'prev') {
-      const currentIndex = parseInt(localStorage.getItem('alpha_trope_index') || '0');
-      const prevIndex = currentIndex === 0 ? Object.keys(TROPES_DATABASE).length - 1 : currentIndex - 1;
-      localStorage.setItem('alpha_trope_index', prevIndex);
-      this.showMessage(`🔄 Switched to trope ${prevIndex + 1}. Reloading...`, 'success');
-      setTimeout(() => window.location.reload(), 1000);
-      return;
-    }
-    
-    // Handle specific trope number (0-4)
-    if (/^\d+$/.test(password)) {
-      const tropeIndex = parseInt(password);
-      const maxIndex = Object.keys(TROPES_DATABASE).length - 1;
-      if (tropeIndex >= 0 && tropeIndex <= maxIndex) {
-        localStorage.setItem('alpha_trope_index', tropeIndex);
-        this.showMessage(`🎯 Switched to trope ${tropeIndex + 1}. Reloading...`, 'success');
-        setTimeout(() => window.location.reload(), 1000);
-        return;
-      } else {
-        this.showMessage(`❌ Invalid trope number. Use 0-${maxIndex}`, 'error');
-        return;
-      }
-    }
-    
-   // Handle exit alpha mode
-  if (password === 'exit') {
-    localStorage.removeItem('alpha_trope_index');
-    this.showMessage('🚪 Exiting alpha mode. Returning to daily trope...', 'success');
-    setTimeout(() => window.location.reload(), 1000);
-    return;
-  }
-
-  // Handle reset commands
-  if (password === 'trope2025' || password === 'alpha') {
-    // Clear all game data for fresh testing
-    localStorage.clear();
-    this.showMessage('🧹 Game reset! Returning to daily trope...', 'success');
-    setTimeout(() => window.location.reload(), 1000);
-  } else {
-    this.showMessage('❌ Invalid command', 'error');
-  }
-  }}
+}
 
 
 // Alpha testing override (add this AFTER the class closing brace)
