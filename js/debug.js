@@ -189,6 +189,21 @@ function resetGameState() {
         hintBtn.textContent = '💡 Hint';
         hintBtn.disabled = false;
         
+        // Clear the visual slots display
+        const correctGrid = document.getElementById('submissionsGrid');
+        if (correctGrid) {
+            const slots = correctGrid.querySelectorAll('.submission-slot');
+            slots.forEach(slot => {
+                slot.className = 'submission-slot';
+                slot.classList.remove('typing-in', 'correct');
+                const content = slot.querySelector('.slot-content');
+                if (content) {
+                    content.textContent = '';
+                    content.classList.remove('typing', 'typing-complete');
+                }
+            });
+        }
+        
         // Call REAL update methods
         window.tropeoutGame.updateSubmissionsDisplay();
         window.tropeoutGame.updateProgress();
