@@ -25,8 +25,15 @@
 
             <!-- Game Progress -->
             <section class="progress-section">
+                <!-- REPLACE the progress-info div in index.html -->
                 <div class="progress-info">
-                    <span class="progress-text"><span id="correctCount">0</span> / 5 correct</span>
+                    <div class="progress-left">
+                        <span class="progress-text"><span id="correctCount">0</span> / 5 correct</span>
+                        <span class="attempts-text">
+                            <span id="attemptCount">0</span> / 10 attempts 
+                            (<span id="remainingCount">10</span> left)
+                        </span>
+                    </div>
                     <button class="hint-btn" id="hintBtn">💡 Hint</button>
                 </div>
                 <div class="progress-bar">

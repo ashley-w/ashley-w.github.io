@@ -237,14 +237,29 @@ class TropeOutGame {
 
   updateProgress() {
     const correctCount = this.correctAnswers.length;
+    const attemptCount = this.submissions.length;
+    const maxAttempts = 10;
+    const remainingAttempts = maxAttempts - attemptCount;
     
-    // Update counter
+    // Update counters
     document.getElementById('correctCount').textContent = correctCount;
+    document.getElementById('attemptCount').textContent = attemptCount;
+    document.getElementById('remainingCount').textContent = remainingAttempts;
     
     // Update progress bar
     const progressFill = document.getElementById('progressFill');
     const percentage = (correctCount / 5) * 100;
     progressFill.style.width = percentage + '%';
+    
+    // Visual warning when attempts are running low
+    const attemptsElement = document.querySelector('.attempts-text');
+    if (remainingAttempts <= 2 && remainingAttempts > 0) {
+      attemptsElement.classList.add('attempts-warning');
+    } else if (remainingAttempts === 0) {
+      attemptsElement.classList.add('attempts-danger');
+    } else {
+      attemptsElement.classList.remove('attempts-warning', 'attempts-danger');
+    }
   }
 
   updateUI() {
@@ -298,7 +313,7 @@ class TropeOutGame {
     const messages = {
       0: {
         title: "🤔 Tough one!",
-        message: "This trope was tricky! Check the suggestions below to help expand our database."
+        message: "Oof, you're out of attempts! Did we miss something? Make a susggestion below to help expand our database."
       },
       1: {
         title: "🌱 A start!",
