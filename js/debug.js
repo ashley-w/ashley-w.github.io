@@ -134,15 +134,16 @@ function populateTropeSelector() {
     // Clear existing options
     selector.innerHTML = '<option value="">Select trope...</option>';
     
-    // Check if TROPES_DATABASE exists and log it
-    console.log('TROPES_DATABASE:', window.TROPES_DATABASE);
-    
+    // Wait for TROPES_DATABASE to be available
     if (!window.TROPES_DATABASE) {
-        console.error('TROPES_DATABASE not found!');
+        console.log('TROPES_DATABASE not ready, waiting...');
+        setTimeout(populateTropeSelector, 500); // Try again in 500ms
         return;
     }
     
-    // Add tropes from database (TROPES_DATABASE is an object, not array)
+    console.log('TROPES_DATABASE found:', window.TROPES_DATABASE);
+    
+    // Add tropes from database
     Object.keys(window.TROPES_DATABASE).forEach((tropeId, index) => {
         const trope = window.TROPES_DATABASE[tropeId];
         console.log(`Adding trope ${index}:`, trope.name);
@@ -152,12 +153,15 @@ function populateTropeSelector() {
         selector.appendChild(option);
     });
     
-    // Handle trope selection
-    selector.addEventListener('change', function() {
-        if (this.value !== '') {
-            changeTrope(parseInt(this.value));
-        }
-    });
+    // Handle trope selection (only add listener once)
+    if (!selector.hasAttribute('data-listener-added')) {
+        selector.addEventListener('change', function() {
+            if (this.value !== '') {
+                changeTrope(parseInt(this.value));
+            }
+        });
+        selector.setAttribute('data-listener-added', 'true');
+    }
 }
 
 function changeTrope(tropeIndex) {
