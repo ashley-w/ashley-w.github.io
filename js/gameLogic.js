@@ -32,6 +32,12 @@ class TropeOutGame {
 
   init() {
     console.log('🚀 init() called');
+
+    if (gameStorage.hasPlayedToday()) {
+    this.showCompletedGameState();
+    return;
+  }
+
     // Load today's trope
     this.loadTodaysTrope();
     
@@ -138,6 +144,33 @@ class TropeOutGame {
       this.handleAlphaAccess();
     });
   }
+
+  showCompletedGameState() {
+    const todaysGame = gameStorage.getTodaysGame();
+    if (!todaysGame) return;
+    
+    // Load the trope but don't allow new submissions
+    this.currentTrope = getTodaysTrope();
+    this.displayTrope();
+    
+    // Restore game state
+    this.submissions = todaysGame.submissions || [];
+    this.correctAnswers = todaysGame.correctAnswers || [];
+    this.hintsUsed = todaysGame.hintsUsed || 0;
+    this.gameComplete = true;
+    
+    // Update UI to show completed state
+    this.updateSubmissionsDisplay();
+    this.updateProgress();
+    document.getElementById('gameForm').style.display = 'none';
+    document.getElementById('gameComplete').style.display = 'block';
+    document.getElementById('finalScore').textContent = this.correctAnswers.length;
+    
+    // Update hint button to show used hints
+    const hintBtn = document.getElementById('hintBtn');
+    hintBtn.textContent = `💡 Used ${this.hintsUsed} hints`;
+    hintBtn.disabled = true;
+    }
 
   handleSubmission() {
     const input = document.getElementById('mediaInput');
@@ -489,17 +522,16 @@ class TropeOutGame {
   }
 
   saveGameData() {
-    // Placeholder - will integrate with gameStorage.js
     const gameData = {
-      date: new Date().toDateString(),
       tropeId: this.currentTrope.id,
-      score: this.correctAnswers.length,
+      tropeName: this.currentTrope.name,
+      correctAnswers: this.correctAnswers,
       submissions: this.submissions,
       hintsUsed: this.hintsUsed,
       completed: this.gameComplete
     };
     
-    console.log('Game data to save:', gameData);
+    gameStorage.saveTodaysGame(gameData);
   }
 
   showMessage(message, type = 'info') {
