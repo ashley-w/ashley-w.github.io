@@ -1,5 +1,5 @@
 // Alpha Testing Debug System with Password Protection
-// Compatible with existing alpha_trope_index localStorage system
+// Uses REAL methods from TropeOutGame class
 
 // Override any existing alpha testing functionality
 document.addEventListener('DOMContentLoaded', function() {
@@ -134,7 +134,7 @@ function populateTropeSelector() {
     // Clear existing options
     selector.innerHTML = '<option value="">Select trope...</option>';
     
-    // Add tropes from database
+    // Add tropes from database (TROPES_DATABASE is an object, not array)
     Object.keys(window.TROPES_DATABASE).forEach((tropeId, index) => {
         const trope = window.TROPES_DATABASE[tropeId];
         const option = document.createElement('option');
@@ -159,13 +159,17 @@ function changeTrope(tropeIndex) {
 }
 
 function resetGameState() {
-    // Clear current game progress
+    // Clear current game progress using REAL methods
     if (window.tropeoutGame) {
         window.tropeoutGame.correctAnswers = [];
-        window.tropeoutGame.guessHistory = [];
-        window.tropeoutGame.attempts = 0;
+        window.tropeoutGame.submissions = []; // Real property name
         window.tropeoutGame.hintsUsed = 0;
         window.tropeoutGame.gameComplete = false;
+        
+        // Call REAL update methods
+        window.tropeoutGame.updateSubmissionsDisplay();
+        window.tropeoutGame.updateProgress();
+        window.tropeoutGame.updateGuessHistory();
     }
     
     // Clear stored progress
@@ -200,9 +204,13 @@ function skipToComplete() {
     
     const currentTrope = window.getTodaysTrope ? window.getTodaysTrope() : null;
     if (currentTrope && currentTrope.examples) {
+        // Fill with first 5 examples
         const examples = currentTrope.examples.slice(0, 5);
-        window.tropeoutGame.correctAnswers = examples;
+        window.tropeoutGame.correctAnswers = examples.map(ex => ex.title);
         window.tropeoutGame.gameComplete = true;
+        
+        // Call REAL method to complete game
+        window.tropeoutGame.completeGame();
     }
     
     alert('Skipped to game complete!');
@@ -215,8 +223,9 @@ function addRandomAnswer() {
         return;
     }
     
+    // Find an example that's not already added
     const availableExamples = currentTrope.examples.filter(example => 
-        !window.tropeoutGame.correctAnswers.includes(example)
+        !window.tropeoutGame.correctAnswers.includes(example.title)
     );
     
     if (availableExamples.length === 0) {
@@ -225,8 +234,13 @@ function addRandomAnswer() {
     }
     
     const randomExample = availableExamples[Math.floor(Math.random() * availableExamples.length)];
-    window.tropeoutGame.correctAnswers.push(randomExample);
-    alert(`Added: ${randomExample}`);
+    window.tropeoutGame.correctAnswers.push(randomExample.title);
+    
+    // Update display using REAL methods
+    window.tropeoutGame.updateSubmissionsDisplay();
+    window.tropeoutGame.updateProgress();
+    
+    alert(`Added: ${randomExample.title}`);
 }
 
 function addManualAnswer() {
@@ -238,6 +252,11 @@ function addManualAnswer() {
     
     const answer = input.value.trim();
     window.tropeoutGame.correctAnswers.push(answer);
+    
+    // Update display using REAL methods
+    window.tropeoutGame.updateSubmissionsDisplay();
+    window.tropeoutGame.updateProgress();
+    
     input.value = '';
     alert(`Added: ${answer}`);
 }
@@ -251,7 +270,7 @@ function showGameState() {
     const currentTrope = window.getTodaysTrope ? window.getTodaysTrope() : null;
     const state = {
         correctAnswers: window.tropeoutGame.correctAnswers || [],
-        attempts: window.tropeoutGame.attempts || 0,
+        submissions: window.tropeoutGame.submissions || [], // Real property name
         hintsUsed: window.tropeoutGame.hintsUsed || 0,
         gameComplete: window.tropeoutGame.gameComplete || false,
         currentTrope: currentTrope ? currentTrope.name : 'Unknown',
@@ -264,7 +283,7 @@ function showGameState() {
 Trope: ${state.currentTrope}
 Alpha Mode: ${state.alphaMode}
 Correct: ${state.correctAnswers.length}/5
-Attempts: ${state.attempts}
+Total Submissions: ${state.submissions.length}
 Hints Used: ${state.hintsUsed}
 Complete: ${state.gameComplete}`);
 }
