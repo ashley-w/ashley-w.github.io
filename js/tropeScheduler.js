@@ -3,7 +3,33 @@
 class TropeScheduler {
   constructor() {
     this.epochDate = new Date('2025-07-07'); // Actual game launch date
-    this.tropeIds = Object.keys(TROPES_DATABASE);
+    
+    // FIXED: Use explicit, stable array order instead of Object.keys()
+    // This ensures the same trope rotation for everyone, always
+    this.tropeIds = [
+      'chosen-one',        // Index 0 - Day 0 (July 7) - Launch day
+      'chekhov-gun',       // Index 1 - Day 1 (July 8) ← Today returns to Chekhov's Gun
+      'fish-out-of-water', // Index 2 - Day 2 (July 9)
+      'evil-laugh',        // Index 3 - Day 3 (July 10)
+      'red-herring',       // Index 4 - Day 4 (July 11)
+      'damsel-in-distress',
+      'unlikely-friendship',
+      'time-loop',
+      'villain-monologue',
+      'fake-death',
+      'double-agent',
+      'ensemble-cast',
+      'love-triangle',
+      'superhero-origin',
+      'macguffin',
+      'amnesia',
+      'mentor-death',
+      'redemption-arc',
+      'training-montage',
+      'manic-pixie-dream-girl',
+      'final-girl',
+      'deus-ex-machina'
+    ];
   }
 
   /**
@@ -16,7 +42,7 @@ class TropeScheduler {
     return Math.floor(timeDiff / (1000 * 3600 * 24));
   }
 
-  /**
+/**
    * Get today's trope ID based on deterministic rotation
    /** @returns {string} Trope ID for today
    
@@ -36,7 +62,7 @@ class TropeScheduler {
   }
 */
 
-/**
+  /**
    * Get today's trope ID based on deterministic rotation
    * @returns {string} Trope ID for today
    */
