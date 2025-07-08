@@ -1,4 +1,4 @@
-// TropeOut - Enhanced Game Storage (Phase 1)
+// TropeOut - Enhanced Game Storage (Phase 1) - FIXED for trope changes
 // Integrates with existing gameLogic.js
 
 class GameStorage {
@@ -44,12 +44,35 @@ class GameStorage {
   }
 
   /**
-   * Check if user has played today
-   * @returns {boolean} True if played today
+   * Check if user has played today's CURRENT trope on TODAY'S DATE (FIXED for Phase 1 looping)
+   * @param {string} currentTropeId - Current trope ID to check against
+   * @returns {boolean} True if played today's current trope today
+   * 
+   * TODO: PHASE 2 - Consider removing date check once we have 365+ tropes
+   * Currently allows same trope on different dates due to Phase 1's limited trope set.
+   * In Phase 2 with enough tropes for year-round unique daily puzzles, we may want
+   * to prevent replaying ANY trope ever, regardless of date.
    */
-  hasPlayedToday() {
+  hasPlayedToday(currentTropeId = null) {
+    const today = new Date().toDateString();
     const todaysGame = this.getTodaysGame();
-    return todaysGame && todaysGame.completed;
+    
+    // If no saved game for today, definitely haven't played
+    if (!todaysGame || !todaysGame.completed) {
+      return false;
+    }
+    
+    // If no current trope provided, fall back to old behavior
+    if (!currentTropeId) {
+      return todaysGame.completed;
+    }
+    
+    // PHASE 1 TEMPORARY: Check if completed game matches current trope AND is from today
+    // This allows replaying the same trope on different dates (necessary for Phase 1 looping)
+    // TODO: In Phase 2, consider changing to just: todaysGame.tropeId === currentTropeId
+    return todaysGame.completed && 
+           todaysGame.tropeId === currentTropeId && 
+           todaysGame.date === today;
   }
 
   /**
@@ -79,15 +102,7 @@ class GameStorage {
       stats.perfectGames++;
     }
     
-    // Track score distribution
-    if (!stats.scoreDistribution[gameData.score]) {
-      stats.scoreDistribution[gameData.score] = 0;
-    }
-    stats.scoreDistribution[gameData.score]++;
-    
-    // Update last played
-    stats.lastPlayed = new Date().toISOString();
-    
+    // Save updated stats
     this.saveData(this.statsKey, stats);
   }
 
@@ -96,7 +111,7 @@ class GameStorage {
    * @returns {Object} User stats object
    */
   getStats() {
-    const defaultStats = {
+    return this.getData(this.statsKey) || {
       gamesPlayed: 0,
       gamesWon: 0,
       totalScore: 0,
@@ -104,12 +119,8 @@ class GameStorage {
       currentStreak: 0,
       bestStreak: 0,
       perfectGames: 0,
-      scoreDistribution: {}, // {0: 2, 1: 1, 2: 3, 3: 5, 4: 4, 5: 8}
-      firstPlayed: new Date().toISOString(),
       lastPlayed: null
     };
-    
-    return { ...defaultStats, ...this.getData(this.statsKey) };
   }
 
   /**
@@ -121,12 +132,15 @@ class GameStorage {
     
     return {
       gamesPlayed: stats.gamesPlayed,
-      winRate: stats.gamesPlayed > 0 ? Math.round((stats.gamesWon / stats.gamesPlayed) * 100) : 0,
-      averageScore: stats.gamesPlayed > 0 ? (stats.totalScore / stats.gamesPlayed).toFixed(1) : '0.0',
+      winRate: stats.gamesPlayed > 0 ? 
+        Math.round((stats.gamesWon / stats.gamesPlayed) * 100) : 0,
+      averageScore: stats.gamesPlayed > 0 ? 
+        (stats.totalScore / stats.gamesPlayed).toFixed(1) : '0.0',
       currentStreak: stats.currentStreak,
       bestStreak: stats.bestStreak,
       perfectGames: stats.perfectGames,
-      averageHints: stats.gamesPlayed > 0 ? (stats.totalHintsUsed / stats.gamesPlayed).toFixed(1) : '0.0'
+      averageHints: stats.gamesPlayed > 0 ? 
+        (stats.totalHintsUsed / stats.gamesPlayed).toFixed(1) : '0.0'
     };
   }
 
