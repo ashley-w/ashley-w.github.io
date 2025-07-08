@@ -1,4 +1,5 @@
 // Alpha Testing Debug System with Password Protection
+// Compatible with existing alpha_trope_index localStorage system
 
 // Override any existing alpha testing functionality
 document.addEventListener('DOMContentLoaded', function() {
@@ -18,19 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Password-protected alpha testing features
-const ALPHA_PASSWORD = "tropedev2025"; // Change this to your preferred password
+const ALPHA_PASSWORD = "tropedev2024";
 let isAlphaAuthenticated = false;
-
-// Initialize alpha testing link
-document.addEventListener('DOMContentLoaded', function() {
-    const alphaLink = document.getElementById('alphaLink');
-    if (alphaLink) {
-        alphaLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            showAlphaLogin();
-        });
-    }
-});
 
 function showAlphaLogin() {
     if (isAlphaAuthenticated) {
@@ -145,7 +135,8 @@ function populateTropeSelector() {
     selector.innerHTML = '<option value="">Select trope...</option>';
     
     // Add tropes from database
-    window.TROPES_DATABASE.forEach((trope, index) => {
+    Object.keys(window.TROPES_DATABASE).forEach((tropeId, index) => {
+        const trope = window.TROPES_DATABASE[tropeId];
         const option = document.createElement('option');
         option.value = index;
         option.textContent = trope.name;
@@ -161,91 +152,71 @@ function populateTropeSelector() {
 }
 
 function changeTrope(tropeIndex) {
-    if (!window.TROPES_DATABASE || !window.TROPES_DATABASE[tropeIndex]) {
-        alert('Invalid trope index!');
-        return;
-    }
-    
-    // Override the current trope
-    window.debugTropeOverride = tropeIndex;
-    
-    // Reset game state for new trope
+    // Use existing localStorage alpha system
+    localStorage.setItem('alpha_trope_index', tropeIndex);
     resetGameState();
-    
-    // Force reload the trope
-    if (window.gameInstance && window.gameInstance.loadTrope) {
-        window.gameInstance.loadTrope();
-    } else {
-        location.reload();
-    }
-    
-    alert(`Changed to trope: ${window.TROPES_DATABASE[tropeIndex].name}`);
+    location.reload();
 }
 
 function resetGameState() {
     // Clear current game progress
-    if (window.gameInstance) {
-        window.gameInstance.correctAnswers = [];
-        window.gameInstance.guessHistory = [];
-        window.gameInstance.attempts = 0;
-        window.gameInstance.hintsUsed = 0;
-        window.gameInstance.gameComplete = false;
-        window.gameInstance.updateDisplay();
+    if (window.tropeoutGame) {
+        window.tropeoutGame.correctAnswers = [];
+        window.tropeoutGame.guessHistory = [];
+        window.tropeoutGame.attempts = 0;
+        window.tropeoutGame.hintsUsed = 0;
+        window.tropeoutGame.gameComplete = false;
     }
     
-    // Clear any stored progress for today
-    if (window.StorageUtils) {
-        const today = new Date().toDateString();
-        StorageUtils.removeItem(`tropeout_progress_${today}`);
-    }
+    // Clear stored progress
+    const keys = Object.keys(localStorage);
+    keys.forEach(key => {
+        if (key.startsWith('tropeout_progress_') || key.startsWith('tropeout_game_')) {
+            localStorage.removeItem(key);
+        }
+    });
     
     alert('Game state reset!');
 }
 
 function clearAllData() {
     if (confirm('This will clear ALL stored data including stats. Continue?')) {
-        // Clear all localStorage data
         const keys = Object.keys(localStorage);
         keys.forEach(key => {
             if (key.startsWith('tropeout_')) {
                 localStorage.removeItem(key);
             }
         });
-        
         alert('All data cleared!');
         location.reload();
     }
 }
 
 function skipToComplete() {
-    if (!window.gameInstance) {
+    if (!window.tropeoutGame) {
         alert('Game instance not found!');
         return;
     }
     
-    // Fill in random answers to complete the game
-    const currentTrope = window.getTodaysTrope ? window.getTodaysTrope() : window.TROPES_DATABASE[0];
+    const currentTrope = window.getTodaysTrope ? window.getTodaysTrope() : null;
     if (currentTrope && currentTrope.examples) {
         const examples = currentTrope.examples.slice(0, 5);
-        window.gameInstance.correctAnswers = examples;
-        window.gameInstance.gameComplete = true;
-        window.gameInstance.updateDisplay();
-        window.gameInstance.showCompletionScreen();
+        window.tropeoutGame.correctAnswers = examples;
+        window.tropeoutGame.gameComplete = true;
     }
     
     alert('Skipped to game complete!');
 }
 
 function addRandomAnswer() {
-    const currentTrope = window.getTodaysTrope ? window.getTodaysTrope() : window.TROPES_DATABASE[0];
-    if (!currentTrope || !currentTrope.examples || !window.gameInstance) {
+    const currentTrope = window.getTodaysTrope ? window.getTodaysTrope() : null;
+    if (!currentTrope || !currentTrope.examples || !window.tropeoutGame) {
         alert('Cannot add answer - missing data!');
         return;
     }
     
-    // Find an example that's not already added
     const availableExamples = currentTrope.examples.filter(example => 
-        !window.gameInstance.correctAnswers.includes(example)
+        !window.tropeoutGame.correctAnswers.includes(example)
     );
     
     if (availableExamples.length === 0) {
@@ -254,46 +225,44 @@ function addRandomAnswer() {
     }
     
     const randomExample = availableExamples[Math.floor(Math.random() * availableExamples.length)];
-    window.gameInstance.correctAnswers.push(randomExample);
-    window.gameInstance.updateDisplay();
-    
+    window.tropeoutGame.correctAnswers.push(randomExample);
     alert(`Added: ${randomExample}`);
 }
 
 function addManualAnswer() {
     const input = document.getElementById('manualAnswer');
-    if (!input || !input.value.trim() || !window.gameInstance) {
+    if (!input || !input.value.trim() || !window.tropeoutGame) {
         alert('Enter a valid answer!');
         return;
     }
     
     const answer = input.value.trim();
-    window.gameInstance.correctAnswers.push(answer);
-    window.gameInstance.updateDisplay();
+    window.tropeoutGame.correctAnswers.push(answer);
     input.value = '';
-    
     alert(`Added: ${answer}`);
 }
 
 function showGameState() {
-    if (!window.gameInstance) {
+    if (!window.tropeoutGame) {
         alert('Game instance not found!');
         return;
     }
     
+    const currentTrope = window.getTodaysTrope ? window.getTodaysTrope() : null;
     const state = {
-        correctAnswers: window.gameInstance.correctAnswers,
-        guessHistory: window.gameInstance.guessHistory,
-        attempts: window.gameInstance.attempts,
-        hintsUsed: window.gameInstance.hintsUsed,
-        gameComplete: window.gameInstance.gameComplete,
-        currentTrope: window.getTodaysTrope ? window.getTodaysTrope().name : 'Unknown'
+        correctAnswers: window.tropeoutGame.correctAnswers || [],
+        attempts: window.tropeoutGame.attempts || 0,
+        hintsUsed: window.tropeoutGame.hintsUsed || 0,
+        gameComplete: window.tropeoutGame.gameComplete || false,
+        currentTrope: currentTrope ? currentTrope.name : 'Unknown',
+        alphaMode: localStorage.getItem('alpha_trope_index') !== null
     };
     
     console.log('Current Game State:', state);
-    alert(`Game State (see console for details):
+    alert(`Game State:
     
 Trope: ${state.currentTrope}
+Alpha Mode: ${state.alphaMode}
 Correct: ${state.correctAnswers.length}/5
 Attempts: ${state.attempts}
 Hints Used: ${state.hintsUsed}
@@ -306,14 +275,5 @@ function closeAlphaPanel() {
         panel.remove();
     }
 }
-
-// Override getTodaysTrope if debug trope is set
-const originalGetTodaysTrope = window.getTodaysTrope;
-window.getTodaysTrope = function() {
-    if (window.debugTropeOverride !== undefined && window.TROPES_DATABASE) {
-        return window.TROPES_DATABASE[window.debugTropeOverride];
-    }
-    return originalGetTodaysTrope ? originalGetTodaysTrope() : null;
-};
 
 console.log("Debug.js loaded successfully!");
