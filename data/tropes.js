@@ -3297,41 +3297,6 @@ const TROPES_DATABASE = {
     tags: ["multiple-protagonists", "group", "equal-focus", "collaboration"]
   },
 
-  "villain-monologue": {
-    id: "villain-monologue",
-    name: "Villain Monologue",
-    definition: "The antagonist explains their evil plan in detail, often giving the hero time to escape or plan a counterattack.",
-    difficulty: "easy",
-    hints: [
-      "Bad guy talks too much instead of just winning",
-      "Usually happens when the villain thinks they've already won",
-      "Gives heroes time to figure out how to escape"
-    ],
-    examples: [
-      { title: "James Bond", type: "movie", year: 1962 },
-      { title: "Austin Powers", type: "movie", year: 1997 },
-      { title: "The Incredibles", type: "movie", year: 2004 },
-      { title: "Spider-Man", type: "movie", year: 2002 },  
-      { title: "Batman", type: "movie", year: 1989 },
-      { title: "The Little Mermaid", type: "movie", year: 1989 },
-      { title: "Star Wars", type: "movie", year: 1977 },
-      { title: "The Simpsons", type: "tv", year: 1989 },
-      { title: "SpongeBob SquarePants", type: "tv", year: 1999 },
-      { title: "Final Fantasy VI", type: "game", year: 1994 },
-      { title: "Sleeping Beauty", type: "movie", year: 1959 },
-      { title: "The Incredibles", type: "movie", year: 2004 },
-      { title: "Scooby-Doo", type: "tv", year: 1969 },
-      { title: "Dr. Strangelove", type: "movie", year: 1964 },
-      { title: "Austin Powers", type: "movie", year: 1997 },
-      { title: "Aladdin", type: "movie", year: 1992 },
-      { title: "The Emperor's New Groove", type: "movie", year: 2000 },
-      { title: "Cruella", type: "movie", year: 2021 },
-      { title: "Maleficent", type: "movie", year: 2014 },
-      { title: "The Dark Knight", type: "movie", year: 2008 }
-    ],
-    tags: ["villain", "comedy", "animation", "classic"]
-  },
-
   "love-triangle": {
     id: "love-triangle",
     name: "Love Triangle",
