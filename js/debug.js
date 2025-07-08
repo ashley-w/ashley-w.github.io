@@ -1,5 +1,21 @@
 // Alpha Testing Debug System with Password Protection
-// Add this script to your index.html or create a separate debug.js file
+
+// Override any existing alpha testing functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Remove any existing event listeners
+    const alphaLink = document.getElementById('alphaLink');
+    if (alphaLink) {
+        // Clone the element to remove all event listeners
+        const newAlphaLink = alphaLink.cloneNode(true);
+        alphaLink.parentNode.replaceChild(newAlphaLink, alphaLink);
+        
+        // Add our new event listener
+        newAlphaLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showAlphaLogin();
+        });
+    }
+});
 
 // Password-protected alpha testing features
 const ALPHA_PASSWORD = "tropedev2025"; // Change this to your preferred password
