@@ -187,6 +187,9 @@ class TropeOutGame {
 
     // Validate submission
     const isCorrect = validateSubmission(submission, this.currentTrope);
+
+    // Format the submission properly
+    const formattedSubmission = this.formatSubmission(submission, this.currentTrope);
     
     // Add to submissions
     this.submissions.push(submission.toLowerCase());
@@ -212,6 +215,22 @@ class TropeOutGame {
 
     // Focus back on input
     input.focus();
+  }
+
+  formatSubmission(submission, trope) {
+    // Find the best matching example and return its proper title
+    const normalizedSubmission = submission.toLowerCase().trim();
+    
+    for (const example of trope.examples) {
+      if (answerValidator.isMatch(normalizedSubmission, example.title)) {
+        return example.title; // Return the properly formatted title
+      }
+    }
+    
+    // Fallback: title case the user's input
+    return submission.split(' ').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    ).join(' ');
   }
 
   updateGuessHistory() {
