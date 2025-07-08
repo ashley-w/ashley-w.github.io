@@ -129,14 +129,23 @@ function showAlphaPanel() {
 
 function populateTropeSelector() {
     const selector = document.getElementById('tropeSelector');
-    if (!selector || !window.TROPES_DATABASE) return;
+    if (!selector) return;
     
     // Clear existing options
     selector.innerHTML = '<option value="">Select trope...</option>';
     
+    // Check if TROPES_DATABASE exists and log it
+    console.log('TROPES_DATABASE:', window.TROPES_DATABASE);
+    
+    if (!window.TROPES_DATABASE) {
+        console.error('TROPES_DATABASE not found!');
+        return;
+    }
+    
     // Add tropes from database (TROPES_DATABASE is an object, not array)
     Object.keys(window.TROPES_DATABASE).forEach((tropeId, index) => {
         const trope = window.TROPES_DATABASE[tropeId];
+        console.log(`Adding trope ${index}:`, trope.name);
         const option = document.createElement('option');
         option.value = index;
         option.textContent = trope.name;
@@ -166,13 +175,23 @@ function resetGameState() {
         window.tropeoutGame.hintsUsed = 0;
         window.tropeoutGame.gameComplete = false;
         
+        // Show the input form again
+        document.getElementById('gameForm').style.display = 'flex';
+        // Hide completion screen
+        document.getElementById('gameComplete').style.display = 'none';
+        
+        // Reset hint button
+        const hintBtn = document.getElementById('hintBtn');
+        hintBtn.textContent = '💡 Hint';
+        hintBtn.disabled = false;
+        
         // Call REAL update methods
         window.tropeoutGame.updateSubmissionsDisplay();
         window.tropeoutGame.updateProgress();
         window.tropeoutGame.updateGuessHistory();
     }
     
-    // Clear stored progress
+    // Clear stored progress for today only
     const keys = Object.keys(localStorage);
     keys.forEach(key => {
         if (key.startsWith('tropeout_progress_') || key.startsWith('tropeout_game_')) {
@@ -207,13 +226,15 @@ function skipToComplete() {
         // Fill with first 5 examples
         const examples = currentTrope.examples.slice(0, 5);
         window.tropeoutGame.correctAnswers = examples.map(ex => ex.title);
-        window.tropeoutGame.gameComplete = true;
         
-        // Call REAL method to complete game
+        // Add fake submissions to make it look realistic
+        window.tropeoutGame.submissions = examples.map(ex => ex.title.toLowerCase());
+        
+        // Call REAL method to complete game (this will save stats properly)
         window.tropeoutGame.completeGame();
     }
     
-    alert('Skipped to game complete!');
+    alert('Skipped to game complete with realistic stats!');
 }
 
 function addRandomAnswer() {
@@ -240,6 +261,11 @@ function addRandomAnswer() {
     window.tropeoutGame.updateSubmissionsDisplay();
     window.tropeoutGame.updateProgress();
     
+    // Check if game should be complete (5 answers)
+    if (window.tropeoutGame.correctAnswers.length >= 5) {
+        window.tropeoutGame.completeGame();
+    }
+    
     alert(`Added: ${randomExample.title}`);
 }
 
@@ -256,6 +282,11 @@ function addManualAnswer() {
     // Update display using REAL methods
     window.tropeoutGame.updateSubmissionsDisplay();
     window.tropeoutGame.updateProgress();
+    
+    // Check if game should be complete (5 answers)
+    if (window.tropeoutGame.correctAnswers.length >= 5) {
+        window.tropeoutGame.completeGame();
+    }
     
     input.value = '';
     alert(`Added: ${answer}`);
