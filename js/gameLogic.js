@@ -195,7 +195,7 @@ class TropeOutGame {
     this.submissions.push(submission.toLowerCase());
     
     if (isCorrect) {
-      this.correctAnswers.push(submission);
+      this.correctAnswers.push(formattedSubmission);
       this.showMessage('Correct! ✅', 'success');
     } else {
       this.showMessage('Not quite... ❌', 'error');
