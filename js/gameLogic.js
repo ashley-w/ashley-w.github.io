@@ -182,10 +182,10 @@ class TropeOutGame {
   }
 
   updateSubmissionsDisplay() {
-    const grid = document.getElementById('submissionsGrid');
-    const slots = grid.querySelectorAll('.submission-slot');
+    const correctGrid = document.getElementById('submissionsGrid');
+    const slots = correctGrid.querySelectorAll('.submission-slot');
     
-    // Show correct answers first
+    // Only show correct answers in the main slots
     this.correctAnswers.forEach((answer, index) => {
       if (slots[index]) {
         slots[index].className = 'submission-slot correct';
@@ -193,19 +193,46 @@ class TropeOutGame {
       }
     });
     
-    // Fill remaining slots with incorrect guesses
+    // Update the guess history separately
+    this.updateGuessHistory();
+  }
+
+  updateGuessHistory() {
+    const historyContainer = document.getElementById('guessHistory');
+    if (!historyContainer) return;
+    
+    // Clear existing history
+    historyContainer.innerHTML = '';
+    
+    if (this.submissions.length === 0) {
+      historyContainer.innerHTML = '<p class="no-guesses">No guesses yet</p>';
+      return;
+    }
+    
+    // Show all guesses (excluding those that are correct)
     const incorrectGuesses = this.submissions.filter(sub => 
       !this.correctAnswers.some(correct => correct.toLowerCase() === sub)
     );
     
-    let slotIndex = this.correctAnswers.length;
-    incorrectGuesses.forEach(guess => {
-      if (slots[slotIndex] && slotIndex < 5) {
-        slots[slotIndex].className = 'submission-slot incorrect';
-        slots[slotIndex].querySelector('.slot-content').textContent = guess;
-        slotIndex++;
-      }
-    });
+    if (incorrectGuesses.length > 0) {
+      const historyList = document.createElement('div');
+      historyList.className = 'guess-history-list';
+      
+      incorrectGuesses.forEach(guess => {
+        const guessItem = document.createElement('span');
+        guessItem.className = 'guess-item incorrect';
+        guessItem.textContent = guess;
+        historyList.appendChild(guessItem);
+      });
+      
+      historyContainer.appendChild(historyList);
+    }
+  
+    // Show total guess count
+    const guessCount = document.createElement('p');
+    guessCount.className = 'guess-count';
+    guessCount.textContent = `${this.submissions.length} total guess${this.submissions.length !== 1 ? 'es' : ''}`;
+    historyContainer.appendChild(guessCount);
   }
 
   updateProgress() {
@@ -254,11 +281,48 @@ class TropeOutGame {
     const completeSection = document.getElementById('gameComplete');
     completeSection.style.display = 'block';
     
-    // Update final score
-    document.getElementById('finalScore').textContent = this.correctAnswers.length;
+    // Get score-appropriate message
+    const score = this.correctAnswers.length;
+    const { title, message } = this.getCompletionMessage(score);
     
-    // Save game data (placeholder for now)
+    // Update completion screen
+    document.getElementById('completionTitle').textContent = title;
+    document.getElementById('completionMessage').textContent = message;
+    document.getElementById('finalScore').textContent = score;
+    
+    // Save game data
     this.saveGameData();
+  }
+
+  getCompletionMessage(score) {
+    const messages = {
+      0: {
+        title: "🤔 Tough one!",
+        message: "This trope was tricky! Check the suggestions below to help expand our database."
+      },
+      1: {
+        title: "🌱 A start!",
+        message: "You found one! These puzzles can be challenging as we build our database."
+      },
+      2: {
+        title: "📚 Getting warmer!",
+        message: "Not bad! Know more examples? Help us expand the database with your suggestions."
+      },
+      3: {
+        title: "🎯 Nice work!",
+        message: "You're getting the hang of this! Three correct is solid progress."
+      },
+      4: {
+        title: "🌟 Great job!",
+        message: "Excellent! You really know your tropes. Almost perfect!"
+      },
+      5: {
+        title: "🏆 Perfect!",
+        message: "Flawless! You absolutely nailed this trope. Impressive work!"
+      }
+    };
+    
+    return messages[score] || messages[0];
   }
 
   shareResults() {

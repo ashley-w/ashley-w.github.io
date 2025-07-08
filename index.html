@@ -48,7 +48,7 @@
 
             <!-- Submissions Display -->
             <section class="submissions-section">
-                <h3>Your Guesses:</h3>
+                <h3>Correct Answers:</h3>
                 <div class="submissions-grid" id="submissionsGrid">
                     <div class="submission-slot empty">1. <span class="slot-content">—</span></div>
                     <div class="submission-slot empty">2. <span class="slot-content">—</span></div>
@@ -56,21 +56,38 @@
                     <div class="submission-slot empty">4. <span class="slot-content">—</span></div>
                     <div class="submission-slot empty">5. <span class="slot-content">—</span></div>
                 </div>
+                
+                <!-- NEW: Guess History Section -->
+                <div class="guess-history-section">
+                    <h4>Your Guesses:</h4>
+                    <div class="guess-history" id="guessHistory">
+                        <p class="no-guesses">No guesses yet</p>
+                    </div>
+                </div>
             </section>
 
             <!-- Game Complete Section (hidden initially) -->
             <section class="game-complete" id="gameComplete" style="display: none;">
                 <div class="complete-card">
-                    <h3 class="complete-title">🎉 Great job!</h3>
+                    <h3 class="complete-title" id="completionTitle">🎉 Great job!</h3>
+                    <p class="complete-message" id="completionMessage">You're getting the hang of this!</p>
                     <p class="complete-score">You found <span id="finalScore">0</span> out of 5!</p>
-                    <div class="complete-actions">
-                        <button class="share-btn" id="shareBtn">📤 Share Results</button>
-                        <button class="stats-btn" id="statsBtn">📊 View Stats</button>
-                        <button class="suggest-btn" onclick="openSuggestionModal()">💡 Know More Examples?</button>
+                    
+                    <!-- NEW: Database Disclaimer -->
+                    <div class="database-notice">
+                        <p class="disclaimer">
+                            💡 <strong>Building Together:</strong> Our answer database is growing! 
+                            If you know examples we missed, please suggest them below.
+                        </p>
                     </div>
-                </div>
-            </section>
-        </main>
+        
+        <div class="complete-actions">
+            <button class="share-btn" id="shareBtn">📤 Share Results</button>
+            <button class="stats-btn" id="statsBtn">📊 View Stats</button>
+            <button class="suggest-btn" onclick="openSuggestionModal()">💡 Suggest Examples</button>
+        </div>
+    </div>
+</section>
 
         <!-- Stats Modal (hidden initially) -->
         <div class="modal" id="statsModal" style="display: none;">
@@ -247,7 +264,7 @@
             // Create hidden form that submits to FormSubmit
             const hiddenForm = document.createElement('form');
             hiddenForm.action = 'https://formsubmit.co/suggestions@tropeout.com'; // Alias not working yet
-            // hiddenForm.action = 'https://formsubmit.co/shlywshngtn@gmail.com'; // Temporarily using my email for testing
+            //hiddenForm.action = 'https://formsubmit.co/shlywshngtn@gmail.com'; // Temporarily using my email for testing
             hiddenForm.method = 'POST';
             hiddenForm.target = 'hidden_iframe';
             hiddenForm.style.display = 'none';
