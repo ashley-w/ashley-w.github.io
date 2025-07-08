@@ -195,7 +195,7 @@ class TropeOutGame {
     this.submissions.push(submission.toLowerCase());
     
     if (isCorrect) {
-      this.correctAnswers.push(submission);
+      this.correctAnswers.push(formattedSubmission);
       this.showMessage('Correct! ✅', 'success');
     } else {
       this.showMessage('Not quite... ❌', 'error');
@@ -255,10 +255,12 @@ class TropeOutGame {
       historyList.className = 'guess-history-list';
       
       incorrectGuesses.forEach(guess => {
-        const guessItem = document.createElement('span');
-        guessItem.className = 'guess-item incorrect';
-        guessItem.textContent = guess;
-        historyList.appendChild(guessItem);
+        if (slots[slotIndex] && slotIndex < 5) {
+          slots[slotIndex].className = 'submission-slot incorrect';
+          const formattedGuess = this.formatSubmission(guess, this.currentTrope);
+          slots[slotIndex].querySelector('.slot-content').textContent = formattedGuess;
+          slotIndex++;
+        }
       });
       
       historyContainer.appendChild(historyList);
